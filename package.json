@@ -1,0 +1,25 @@
+{
+  "name": "acrofiler",
+  "version": "1.0.0",
+  "description": "Resource profiler for node, utilizing child processes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.acromedia.com:teams/id/node-acrofiler.git"
+  },
+  "keywords": [
+    "profiling",
+    "memory",
+    "cpu",
+    "performance",
+    "testing"
+  ],
+  "author": "Acromedia Inc.",
+  "license": "ISC",
+  "dependencies": {
+    "pidusage": "^2.0.21"
+  }
+}
