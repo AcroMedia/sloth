@@ -2,7 +2,7 @@ const fs = require('fs');
 const pidusage = require('pidusage');
 const pid = process.argv[2];
 const timestep = process.argv[3] || 100;
-const writeToFile = process.argv[4] === 1;
+const writeToFile = process.argv[4] === 'true';
 
 // Base memory object.
 let memObj = {
@@ -34,6 +34,7 @@ setInterval(async () => {
 process.on('message', (message) => {
   if (message === 'stop') {
     memObj.end = Date.now();
+    memObj.time_elapsed = memObj.end - memObj.start;
 
     // Use callbacks since exit handler doesn't like async.
     pidusage(pid, (err, data) => {
@@ -45,7 +46,7 @@ process.on('message', (message) => {
         fs.writeFile('./memstats.json', JSON.stringify(memObj), 'utf8');
       }
 
-      console.log(memObj);
+      process.send(memObj);
     });
   }
 });
