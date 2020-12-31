@@ -26,6 +26,7 @@ module.exports = class Profiler {
 
       // Kill the watcher process.
       this.process.kill();
+      this.process = null;
     });
 
     return this;
@@ -36,6 +37,13 @@ module.exports = class Profiler {
     // Once we have the data, we can safely kill the process.
     this.process.send('stop');
 
-    return this;
+    return new Promise((res) => {
+      const intr = setInterval(() => {
+        if (!this.process) {
+          clearInterval(intr);
+          res(this);
+        }
+      }, 100);
+    });
   }
 };
