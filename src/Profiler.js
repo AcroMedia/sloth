@@ -22,7 +22,6 @@ module.exports = class Profiler {
 
     // Setup our message handler for when the process sends the data.
     this.process.on('message', (message) => {
-      console.log(message);
       this.results = message;
 
       // Kill the watcher process.
