@@ -1,5 +1,5 @@
 {
-  "name": "loon",
+  "name": "memtrace",
   "version": "1.0.0",
   "description": "Resource profiler for node, utilizing child processes",
   "main": "index.js",
