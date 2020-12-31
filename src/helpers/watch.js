@@ -2,7 +2,8 @@ const fs = require('fs');
 const pidusage = require('pidusage');
 const pid = process.argv[2];
 const timestep = process.argv[3] || 100;
-const writeToFile = process.argv[4] === 'true';
+const wait = process.argv[4] || 0;
+const writeToFile = process.argv[5] === 'true';
 
 // Base memory object.
 let memObj = {
@@ -33,22 +34,24 @@ setInterval(async () => {
 
 process.on('message', (message) => {
   if (message === 'stop') {
-    memObj.end = Date.now();
-    memObj.time_elapsed = memObj.end - memObj.start;
-
-    // Use callbacks since exit handler doesn't like async.
-    pidusage(pid, (err, data) => {
-      // Set end usage bytes
-      memObj.end_usage_bytes = data.memory;
-
-      // TODO: Send back data OR write to file.
-      if (writeToFile) {
-        fs.writeFile('./memstats.json', JSON.stringify(memObj), 'utf8', () => {
-          process.send(memObj);
-        });
-      }
-
-      process.send(memObj);
-    });
+    setTimeout(() => {
+      memObj.end = Date.now();
+      memObj.time_elapsed = memObj.end - memObj.start;
+  
+      // Use callbacks since exit handler doesn't like async.
+      pidusage(pid, (err, data) => {
+        // Set end usage bytes
+        memObj.end_usage_bytes = data.memory;
+  
+        // TODO: Send back data OR write to file.
+        if (writeToFile) {
+          fs.writeFile('./memstats.json', JSON.stringify(memObj), 'utf8', () => {
+            process.send(memObj);
+          });
+        }
+  
+        process.send(memObj);
+      });
+    }, wait);
   }
 });

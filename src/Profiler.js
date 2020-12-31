@@ -15,10 +15,11 @@ module.exports = class Profiler {
     // Optional params
     this.toFile = opts.toFile || false;
     this.timestep = opts.timestep || 100;
+    this.wait = opts.waitAfterEnd || 0;
   }
 
   start() {
-    this.process = cp.fork(`${__dirname}/helpers/watch.js`, [this.toWatch, this.timestep, this.toFile]);
+    this.process = cp.fork(`${__dirname}/helpers/watch.js`, [this.toWatch, this.timestep, this.wait, this.toFile]);
 
     // Setup our message handler for when the process sends the data.
     this.process.on('message', (message) => {
