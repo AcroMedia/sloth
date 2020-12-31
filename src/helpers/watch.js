@@ -18,7 +18,7 @@ let memObj = {
 
 setInterval(async () => {
   let data = await pidusage(pid);
-  memObj.memlist.push(data.memory);
+  memObj.mem_list.push(data.memory);
 
   // First check?
   if (memObj.mem_list.length === 0) {
@@ -43,7 +43,9 @@ process.on('message', (message) => {
 
       // TODO: Send back data OR write to file.
       if (writeToFile) {
-        fs.writeFile('./memstats.json', JSON.stringify(memObj), 'utf8');
+        fs.writeFile('./memstats.json', JSON.stringify(memObj), 'utf8', () => {
+          process.send(memObj);
+        });
       }
 
       process.send(memObj);

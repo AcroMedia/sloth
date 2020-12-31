@@ -9,7 +9,6 @@ module.exports = class Profiler {
    */
   constructor(pid, opts = {}) {
     this.toWatch = pid;
-    this.pid = null;
     this.results = null;
     this.process = null;
     
@@ -19,18 +18,21 @@ module.exports = class Profiler {
   }
 
   start() {
-    this.process = cp.fork(`node ./helpers/watch.js ${this.pid} ${this.timestep} ${this.toFile}`);
+    this.process = cp.fork(`${__dirname}/helpers/watch.js`, [this.toWatch, this.timestep, this.toFile]);
+
+    // Setup our message handler for when the process sends the data.
+    this.process.on('message', (message) => {
+      console.log(message);
+      this.results = message;
+
+      // Kill the watcher process.
+      this.process.kill();
+    });
 
     return this;
   }
 
   end() {
-    // Setup our message handler for when the process sends the data.
-    process.on('message', (message) => {
-      console.log(message);
-      this.results = message;
-    });
-
     // Send 'stop' message which will give us our data.
     // Once we have the data, we can safely kill the process.
     this.process.send('stop');
