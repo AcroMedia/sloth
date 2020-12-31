@@ -9,7 +9,7 @@ let memObj = {
   start: Date.now(),
   end: 0,
   time_elapsed: 0,
-  timestep_ms: timestep,
+  timestep_ms: Number(timestep),
   mem_list: [],
   start_usage_bytes: 0,
   peak_usage_bytes: 0,
