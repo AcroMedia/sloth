@@ -1,4 +1,4 @@
-const { literal } = require('./literal');
+const serial = require('serialize-javascript');
 
 module.exports = (fn, args) => {
   const fnString = String(fn);
@@ -6,7 +6,7 @@ module.exports = (fn, args) => {
   let internal;
 
   fnArgs = fnArgs.map(a => {
-    let val = literal(args[fnArgs.indexOf(a)] || null);
+    let val = serial(args[fnArgs.indexOf(a)] || null);
 
     if (Array.isArray(val) || typeof val === 'object') val = JSON.stringify(val);
 

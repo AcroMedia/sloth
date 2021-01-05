@@ -20,7 +20,8 @@
   "author": "Acromedia Inc.",
   "license": "ISC",
   "dependencies": {
-    "pidusage": "^2.0.21"
+    "pidusage": "^2.0.21",
+    "serialize-javascript": "^5.0.1"
   },
   "devDependencies": {
     "eslint": "^7.16.0"
