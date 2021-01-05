@@ -5,7 +5,19 @@ module.exports = class Profiler {
    * Class for profiling a process, provided a PID.
    * 
    * @param {Number} pid
+   * The process PID.
+   * 
    * @param {Object} opts
+   * Profiler options.
+   * 
+   * @param {Boolean} opts.toFile
+   * Whether to spit out the output into a JSON file.
+   * 
+   * @param {Number} opts.timestep
+   * The amount of time in milliseconds before each memory check.
+   * 
+   * @param {Number} opts.waitAfterEnd
+   * The amount of time to wait after the profiler has been stopped.
    */
   constructor(pid, opts = {}) {
     this.toWatch = pid;
@@ -18,6 +30,9 @@ module.exports = class Profiler {
     this.wait = opts.waitAfterEnd || 0;
   }
 
+  /**
+   * Starts the watching process by spawning a fork of the monitoring file.
+   */
   start() {
     this.process = cp.fork(`${__dirname}/../helpers/watch.js`, [this.toWatch, this.timestep, this.wait, this.toFile]);
 
@@ -33,6 +48,9 @@ module.exports = class Profiler {
     return this;
   }
 
+  /**
+   * Kills the monitoring fork process, returns data.
+   */
   end() {
     // Send 'stop' message which will give us our data.
     // Once we have the data, we can safely kill the process.

@@ -17,6 +17,7 @@ let memObj = {
   end_usage_bytes: 0
 };
 
+// Check cycle
 setInterval(async () => {
   let data = await pidusage(pid);
   memObj.mem_list.push(data.memory);
