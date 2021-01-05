@@ -8,14 +8,16 @@ module.exports = async (func, args = [], opts) => {
   const formatted = fnFormat(func, args);
   let results;
 
-  profiler.start();
-
   // Send serialized function
   child.send({ func: formatted, args });
 
-  child.on('message', async () => {
-    results = await profiler.end();
-    child.kill();
+  child.on('message', async (message) => {
+    if (message === 'start') {
+      profiler.start();
+    } else if (message === 'finish') {
+      results = await profiler.end();
+      child.kill();
+    }
   });
   
   return new Promise((res) => {
