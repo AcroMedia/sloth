@@ -1,12 +1,12 @@
+const literal = require('./literal');
+
 module.exports = (fn, args) => {
   const fnString = String(fn);
   let fnArgs = fnString.split('(')[1].split(')')[0].split(',');
   let internal;
 
   fnArgs = fnArgs.map(a => {
-    let val = args[fnArgs.indexOf(a)] || null;
-
-    if (typeof val === 'string') val = `"${val.replace(/"/g, '\\"')}"`;
+    let val = literal(args[fnArgs.indexOf(a)] || null);
 
     return `${a}=${val}`;
   });
