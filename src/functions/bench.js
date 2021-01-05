@@ -1,15 +1,17 @@
 const Profiler = require('../classes/Profiler');
+const fnFormat = require('../helpers/fnFormat');
 const { fork } = require('child_process');
 
 module.exports = async (func, args = [], opts) => {
   const child = fork(`${__dirname}/../helpers/thread.js`, { execArgv: ['--expose-gc'] });
   const profiler = new Profiler(child.pid, opts);
+  const formatted = fnFormat(func, args);
   let results;
 
   profiler.start();
 
   // Send serialized function
-  child.send({ func: String(func), args });
+  child.send({ func: formatted, args });
 
   child.on('message', async () => {
     results = await profiler.end();
