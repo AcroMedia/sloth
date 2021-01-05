@@ -8,4 +8,6 @@ process.on('message', (message) => {
   }
 
   global.gc();
+
+  process.send('finish');
 });
