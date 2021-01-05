@@ -1,14 +1,15 @@
 const Profiler = require('../classes/Profiler');
 const { fork } = require('child_process');
 
-module.exports = async (func, args, opts) => {
+module.exports = async (func, args = [], opts) => {
   const child = fork(`${__dirname}/../helpers/thread.js`, { execArgv: ['--expose-gc'] });
   const profiler = new Profiler(child.pid, opts);
   let results;
 
   profiler.start();
 
-  child.send({ func, args });
+  // Send serialized function
+  child.send({ func: String(func), args });
 
   child.on('message', async () => {
     results = await profiler.end();
