@@ -19,7 +19,5 @@ module.exports = (fn, args) => {
 
   const final = `((${fnArgs.join(',')}) => { ${internal} })()`;
 
-  console.log(final);
-
   return final;
 };
