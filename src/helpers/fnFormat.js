@@ -1,4 +1,4 @@
-const literal = require('./literal');
+const { literal } = require('./literal');
 
 module.exports = (fn, args) => {
   const fnString = String(fn);
@@ -7,6 +7,8 @@ module.exports = (fn, args) => {
 
   fnArgs = fnArgs.map(a => {
     let val = literal(args[fnArgs.indexOf(a)] || null);
+
+    if (Array.isArray(val) || typeof val === 'object') val = JSON.stringify(val);
 
     return `${a}=${val}`;
   });
