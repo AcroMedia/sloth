@@ -35,9 +35,9 @@ module.exports = async (func, args = [], opts) => {
   
   // Wait until we have data back, then resolve.
   return new Promise((res) => {
-    const interval = setInterval(() => {
+    const intr = setInterval(() => {
       if (results) {
-        clearInterval(interval);
+        clearInterval(intr);
         res(results);
       }
     }, 500);

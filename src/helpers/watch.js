@@ -20,12 +20,14 @@ let memObj = {
 // Check cycle
 setInterval(async () => {
   let data = await pidusage(pid);
-  memObj.mem_list.push(data.memory);
 
   // First check?
   if (memObj.mem_list.length === 0) {
     memObj.start_usage_bytes = data.memory;
   }
+
+  // Push current memory usage
+  memObj.mem_list.push(data.memory);
 
   // Is this our highest amount of memory usage?
   if (memObj.peak_usage_bytes < data.memory) {
