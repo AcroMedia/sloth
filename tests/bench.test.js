@@ -69,3 +69,27 @@ describe('small data tests', () => {
     expect(peak > 6 && peak < 10).toBeTruthy();
   });
 });
+
+describe('large data tests', () => {
+  it('ensures data consistancy with big data', async () => {
+    // Function to test
+    function a() {
+      // Fill up an array with one million 0s.
+      let myBigArray = new Array(1e8).fill(0);
+      myBigArray.reverse();
+    }
+
+    const data = (await bench(a, [], {
+      timestep: 100,
+      toFile: false,
+      waitAfterEnd: 1000,
+      trimNodeProcessUsage: true,
+    })).results
+
+    // Converted to MB
+    const peak = data.peak_usage_bytes / (1000 * 1000);
+
+    // Memory must be within 6 MB of potential error.
+    expect(peak > 1200 && peak < 1206).toBeTruthy();
+  });
+});

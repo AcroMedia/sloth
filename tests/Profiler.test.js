@@ -72,6 +72,6 @@ describe('large data tests', () => {
     console.log(peak)
 
     // Memory must be within 6 MB of potential error
-    expect(peak > 1192 && peak < 1198).toBeTruthy();
+    expect(peak > 1392 && peak < 1398).toBeTruthy();
   });
 })
