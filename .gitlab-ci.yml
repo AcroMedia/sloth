@@ -1,0 +1,13 @@
+image: node:latest
+
+stages:
+  - test
+
+test:
+  script:
+    - yarn install
+    # Only run smaller tests on CI
+    - yarn test -t "small data tests"
+  artifacts:
+    paths:
+      - node_modules/

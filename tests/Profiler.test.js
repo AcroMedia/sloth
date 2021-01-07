@@ -1,7 +1,6 @@
 const Profiler = require('../src/classes/Profiler');
 
-
-describe('Profiler', () => {
+describe('small data tests', () => {
   it('ensures constructor works without options', () => {
     const prof = new Profiler(123);
 
@@ -47,7 +46,9 @@ describe('Profiler', () => {
     // Memory must be within 4 MB of potential error.
     expect(peak > 6 && peak < 10).toBeTruthy();
   });
+});
 
+describe('large data tests', () => {
   it('ensures data consistancy with big data', async () => {
     const prof = new Profiler(process.pid, {
       timestep: 100,
@@ -71,4 +72,4 @@ describe('Profiler', () => {
     // Memory must be within 6 MB of potential error
     expect(peak > 1392 && peak < 1398)
   });
-});
+})
