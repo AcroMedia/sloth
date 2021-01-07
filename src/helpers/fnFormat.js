@@ -25,7 +25,7 @@ module.exports = (fn, args) => {
   if (fnString.split(/\{/)[1]) {
     internal = fnString.split(/\{/)[1].slice(0, -1);
   } else {
-    internal = fnString.split('=> ')[1] || null;
+    internal = 'return ' + fnString.split('=> ')[1] || null;
   }
 
   const final = `((${fnArgs.join(',')}) => { ${internal} })()`;
