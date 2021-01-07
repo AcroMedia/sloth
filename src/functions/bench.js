@@ -26,7 +26,7 @@ module.exports = async (func, args = [], opts) => {
   // Control of the profiler is given to the child process.
   child.on('message', async (message) => {
     if (message === 'start') {
-      profiler.start();
+      await profiler.start();
     } else if (message === 'finish') {
       results = await profiler.end();
       child.kill();
