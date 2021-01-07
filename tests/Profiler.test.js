@@ -70,6 +70,6 @@ describe('large data tests', () => {
     const peak = data.peak_usage_bytes / (1000 * 1000)
 
     // Memory must be within 6 MB of potential error
-    expect(peak > 1392 && peak < 1398)
+    expect(peak > 1392 && peak < 1398).toBeTruthy();
   });
 })

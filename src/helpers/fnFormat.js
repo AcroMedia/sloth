@@ -13,14 +13,14 @@ module.exports = (fn, args) => {
   let fnArgs = fnString.split('(')[1].split(')')[0].split(',');
   let internal;
 
-  fnArgs = fnArgs.map(a => {
+  fnArgs = args.length > 0 ? fnArgs.map(a => {
     // Make sure all args are serialized
     let val = serial(args[fnArgs.indexOf(a)] || null);
 
     if (Array.isArray(val) || typeof val === 'object') val = JSON.stringify(val);
 
     return `${a}=${val}`;
-  });
+  }) : [];
 
   if (fnString.split(/\{/)[1]) {
     internal = fnString.split(/\{/)[1].slice(0, -1);
