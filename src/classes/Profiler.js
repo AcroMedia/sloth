@@ -28,6 +28,8 @@ module.exports = class Profiler {
     this.results = null;
     this.process = null;
     
+    if (opts && typeof opts !== 'object') opts = {}
+
     // Optional params
     this.toFile = opts.toFile || false;
     this.timestep = opts.timestep || 100;

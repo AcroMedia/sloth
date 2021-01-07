@@ -17,6 +17,11 @@ const { fork } = require('child_process');
 module.exports = async (func, args = [], opts) => {
   const child = fork(`${__dirname}/../helpers/thread.js`, { execArgv: ['--expose-gc'] });
   const profiler = new Profiler(child.pid, opts);
+
+  // Argument type errors to prevent cryptic errors when formatting/passing stuff around.
+  if (typeof func !== 'function') throw new TypeError('Function argument was not a function')
+  if (!Array.isArray(args)) throw new TypeError('Arguments were not provided as an array')
+
   const formatted = fnFormat(func, args);
   let results;
 
