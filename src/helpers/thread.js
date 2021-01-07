@@ -1,15 +1,20 @@
-process.on('message', async ({ func, args }) => {
-  // Convert serialized function to actual.
-  if (func) func = Function(func);
+let func, args;
 
-  // Now that we're set up, ask the watcher to start.
-  process.send('start');
+process.on('message', async (message) => {
+  if (message.stage === 'preload') {
+    // Convert serialized function to actual.
+    if (message.func) func = Function(message.func)
+    if (message.args) args = message.args
+    else args = []
 
-  // Run with await in case of async.
-  await func(...args);
+    process.send('preloaded')
+  } else if (message.stage === 'start') {
+    // Run with await in case of async.
+    await func(...args);
 
-  // Run JS garbage collector.
-  global.gc();
+    // Run JS garbage collector.
+    global.gc();
   
-  process.send('finish');
+    process.send('finish');
+  }
 });

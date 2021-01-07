@@ -26,12 +26,14 @@ module.exports = async (func, args = [], opts) => {
   let results;
 
   // Send serialized function.
-  child.send({ func: formatted, args });
+  child.send({ stage: 'preload', func: formatted, args });
 
   // Control of the profiler is given to the child process.
   child.on('message', async (message) => {
-    if (message === 'start') {
+    if (message === 'preloaded') {
+      // Start profiler first in order to allow the memory watcher to get baseline data.
       await profiler.start();
+      child.send({ stage: 'start' })
     } else if (message === 'finish') {
       results = await profiler.end();
       child.kill();
