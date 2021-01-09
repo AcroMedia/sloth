@@ -57,7 +57,7 @@ module.exports = class ProfileResults {
    * Get median memory usage.
    */
   medianMemoryUsage() {
-    return this.data.mem_list.sort((a, b) => a > b)[(this.data.mem_list.length/2)]
+    return this.data.mem_list.sort((a, b) => a > b)[Math.round(this.data.mem_list.length/2)]
   }
 
   /**
