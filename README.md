@@ -48,7 +48,7 @@ Methods are described below, all are async:
 | Method | Description |
 |--|--|
 | start | Begins the profiling, returns itself. |
-| end | Stops profiling, populates `profiler.results` with data, returns itself. |
+| end | Stops profiling, returns instance of `ProfileResults` |
 ### Examples
 
 Creating a new Profiler instance that will keep track of it's own process's usage:

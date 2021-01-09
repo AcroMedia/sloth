@@ -1,5 +1,5 @@
 const cp = require('child_process');
-const { readSync } = require('fs');
+const ProfileResults = require('./ProfileResults')
 
 module.exports = class Profiler {
   /**
@@ -51,7 +51,7 @@ module.exports = class Profiler {
 
     // Setup our message handler for when the process sends the data.
     this.process.on('message', (message) => {
-      this.results = message;
+      this.results = new ProfileResults(message);
 
       // Kill the watcher process.
       this.process.kill();
@@ -78,7 +78,7 @@ module.exports = class Profiler {
       const intr = setInterval(() => {
         if (!this.process) {
           clearInterval(intr);
-          res(this);
+          res(this.results);
         }
       }, 100);
     });

@@ -1,7 +1,7 @@
 const Profiler = require('../classes/Profiler');
 const { getInternals, wrap } = require('../helpers/fnFormat');
 const { fork } = require('child_process');
-const { format } = require('path');
+const ProfileResults = require('../classes/ProfileResults')
 
 /**
  * Benchmarks a function in an isolated process.
@@ -19,6 +19,8 @@ const { format } = require('path');
  * Function that contians code that will run before the main function is run.
  * 
  * Good for using require() and other things that are otherwise declared globally.
+ * 
+ * @returns {ProfileResults}
  */
 module.exports = async (func, args = [], opts = {}) => {
   const child = fork(`${__dirname}/../helpers/thread.js`, { execArgv: ['--expose-gc'] });
