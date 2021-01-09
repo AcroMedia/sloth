@@ -1,6 +1,7 @@
 const Profiler = require('../classes/Profiler');
-const fnFormat = require('../helpers/fnFormat');
+const { getInternals, wrap } = require('../helpers/fnFormat');
 const { fork } = require('child_process');
+const { format } = require('path');
 
 /**
  * Benchmarks a function in an isolated process.
@@ -12,7 +13,12 @@ const { fork } = require('child_process');
  * The arguments to supply.
  * 
  * @param {Object} opts
- * Profiler options (see Profiler class). 
+ * Profiler options (see Profiler class).
+ * 
+ * @param {Function} opts.setup
+ * Function that contians code that will run before the main function is run.
+ * 
+ * Good for using require() and other things that are otherwise declared globally.
  */
 module.exports = async (func, args = [], opts) => {
   const child = fork(`${__dirname}/../helpers/thread.js`, { execArgv: ['--expose-gc'] });
@@ -22,8 +28,18 @@ module.exports = async (func, args = [], opts) => {
   if (typeof func !== 'function') throw new TypeError('Function argument was not a function')
   if (!Array.isArray(args)) throw new TypeError('Arguments were not provided as an array')
 
-  const formatted = fnFormat(func, args);
+  const internals = getInternals(func, args)
+  let formatted = wrap(internals.fn, internals.fnArgs);
   let results;
+
+  // Do we have a "setup" function?
+  if (opts.setup && typeof opts.setup === 'function') {
+    // Serialize the setup function
+    const setupInternals = getInternals(opts.setup).fn
+  
+    // Prepend the internal function with setup code.
+    formatted = setupInternals + ';\n' + formatted
+  }
 
   // Send serialized function.
   child.send({ stage: 'preload', func: formatted, args });
