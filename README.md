@@ -122,8 +122,82 @@ const { bench } = require('memtrace')
 await bench(function, arguments, options)
 ```
 
-For details on options, see [Using the Profiler class](#using-the-profiler-class), as this function uses the exact same options, with one addition:
+It will return the `Profiler` instance used for measurement.
+
+For details on options, see [Using the Profiler class](#using-the-profiler-class), as this function uses the exact same options with one important addition:
 
 | Option | Description |
 |--|--|
 | setup | Function - Code to run in the "global" scope. Useful for `require()`s and other otherwise globally defined variables. |
+
+### Examples
+
+Setting up a test that measures the creation of a large array:
+```js
+function f() {
+  let arr = new Array(1e8).fill(0)
+}
+
+// OR
+
+const f = () => {
+  let arr = new Array(1e8).fill(0)
+}
+
+const results = await bench(f, [], {
+  // Less useful, but still a good idea
+  trimNodeProcessUsage: true
+})
+```
+
+Testing out an anonymous function:
+```js
+const results = bench(() => {
+  console.log('I work!')
+})
+
+// OR
+
+const results = bench(function() {
+  console.log('I work!')
+})
+```
+
+Using arguments:
+```js
+function log(text) {
+  console.log(text)
+}
+
+const results = bench(log, ['I work!'])
+
+// OR 
+
+const results = bench((text) => console.log(text), ['I work!'])
+```
+
+Using a setup function:
+```js
+// Logging a globally defined variable
+function f() {
+  console.log(myVar)
+}
+
+const results = await bench(f, [], {
+  setup: () => {
+    let myVar = 'I work!'
+  }
+})
+```
+```js
+// Using a module imported using require()
+function f(data) {
+  fs.writeFileSync('text.txt', data, 'utf8')
+}
+
+const results = await bench(f, ['I work!'], {
+  setup: () => {
+    const fs = require('fs')
+  }
+})
+```
