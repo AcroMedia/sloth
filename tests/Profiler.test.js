@@ -38,10 +38,10 @@ describe('small data tests', () => {
     myBigArray.reverse();
 
     // Stop the profiler, get the data.
-    const data = (await prof.end()).results;
+    const results = await prof.end();
 
     // Converted to MB
-    const peak = data.peak_usage_bytes / (1000 * 1000);
+    const peak = results.data.peak_usage_bytes / (1000 * 1000);
 
     // Memory must be within 4 MB of potential error.
     expect(peak > 6 && peak < 10).toBeTruthy();
@@ -66,10 +66,11 @@ describe('large data tests', () => {
     let myHugeArray = new Array(1e8).fill(0);
     myHugeArray.reverse();
 
-    const data = (await prof.end()).results
-    const peak = data.peak_usage_bytes / (1000 * 1000)
+    const results = await prof.end()
+    const peak = results.data.peak_usage_bytes / (1000 * 1000)
 
     // Memory must be within 6 MB of potential error
-    expect(peak > 1392 && peak < 1398).toBeTruthy();
+    expect((peak > 1392 && peak < 1398) ||
+            (peak > 1192 && peak < 1198)).toBeTruthy();
   });
 })

@@ -55,15 +55,15 @@ describe('small data tests', () => {
       myBigArray.reverse();
     }
 
-    const data = (await bench(a, [], {
+    const results = await bench(a, [], {
       timestep: 100,
       toFile: false,
       waitAfterEnd: 1000,
       trimNodeProcessUsage: true,
-    })).results
+    })
 
     // Converted to MB
-    const peak = data.peak_usage_bytes / (1000 * 1000);
+    const peak = results.data.peak_usage_bytes / (1000 * 1000);
 
     // Memory must be within 4 MB of potential error.
     expect(peak > 6 && peak < 10).toBeTruthy();
@@ -79,15 +79,15 @@ describe('large data tests', () => {
       myBigArray.reverse();
     }
 
-    const data = (await bench(a, [], {
+    const results = await bench(a, [], {
       timestep: 100,
       toFile: false,
       waitAfterEnd: 1000,
       trimNodeProcessUsage: true,
-    })).results
+    })
 
     // Converted to MB
-    const peak = data.peak_usage_bytes / (1000 * 1000);
+    const peak = results.data.peak_usage_bytes / (1000 * 1000);
 
     // Memory must be within 6 MB of potential error.
     expect(peak > 1200 && peak < 1206).toBeTruthy();
