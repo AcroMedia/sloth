@@ -132,6 +132,8 @@ For details on options, see [Using the Profiler class](#using-the-profiler-class
 
 ### Examples
 
+\* FYI: The word "global" is often in quotes, as it technically isn't global, but instead in the outer scope of the function.
+
 Setting up a test that measures the creation of a large array:
 ```js
 function f() {
@@ -145,7 +147,7 @@ const f = () => {
 }
 
 const results = await bench(f, [], {
-  // Less useful, but still a good idea
+  // Less useful, since the process is basically isolated, but still a good idea
   trimNodeProcessUsage: true
 })
 ```
@@ -178,7 +180,7 @@ const results = bench((text) => console.log(text), ['I work!'])
 
 Using a setup function:
 ```js
-// Logging a globally defined variable
+// Logging a "globally" defined variable
 function f() {
   console.log(myVar)
 }
@@ -201,3 +203,9 @@ const results = await bench(f, ['I work!'], {
   }
 })
 ```
+
+### Extra Notes
+
+When a thread is spawned, it is automatically run with the `--expose-gc` option, and will always run it once everything has completed, but before the profiler is finished, in order to give a better insight on ending memory usage (`end_usage_bytes` in the `results` object.)
+
+Obviously there are security implications when it comes to running code in a serialized-to-unserialized way, even if it's in a separate process and you have complete control of the code going in. Be careful as to how and where you use `bench()`, sometimes using the `Profiler` class will be safer.

@@ -35,11 +35,13 @@ module.exports = async (func, args = [], opts = {}) => {
   // Do we have a "setup" function?
   if (opts.setup && typeof opts.setup === 'function') {
     // Serialize the setup function
-    const setupInternals = getInternals(opts.setup).fn
+    const setupInternals = getInternals(opts.setup).fn.replace(/^\s*/gm, '')
   
     // Prepend the internal function with setup code.
     formatted = setupInternals + ';\n' + formatted
   }
+
+  console.log(formatted)
 
   // Send serialized function.
   child.send({ stage: 'preload', func: formatted, args });
