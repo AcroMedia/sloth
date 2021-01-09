@@ -8,6 +8,7 @@ Memtrace (name not final) is a Node module created with the intention of allowin
 - [Usage](#usage)
   - [Using the Profiler class](#using-the-profiler-class)
   - [Using the bench function](#using-the-bench-function)
+  - [ProfileResults](#profileresults)
 
 # Installation
 
@@ -38,17 +39,17 @@ Options are described below, all are optional:
 
 | Option | Description |
 |--|--|
-| toFile | Boolean - whether to export the results to a file or not. |
+| toFile | Boolean - Whether to export the results to a file or not |
 | timestep | Number - How long, in milliseconds, the memory monitor will check memory usage |
-| wait | Number - How long, in milliseconds, the profiler should wait before returning results. |
+| wait | Number - How long, in milliseconds, the profiler should wait before returning results |
 | trimNodeProcessUsage | Takes the memory usage of the node process before anything has happened, and removes that from the data. Should allow for yielding more accurate results in most cases |
 
 Methods are described below, all are async:
 
 | Method | Description |
 |--|--|
-| start | Begins the profiling, returns itself. |
-| end | Stops profiling, returns instance of `ProfileResults` |
+| start | Begins the profiling, returns itself |
+| end | Stops profiling, returns instance of `ProfileResults`. See more about `ProfileResults` [here](#profileresults) |
 ### Examples
 
 Creating a new Profiler instance that will keep track of it's own process's usage:
@@ -122,13 +123,13 @@ const { bench } = require('memtrace')
 await bench(function, arguments, options)
 ```
 
-It will return the `Profiler` instance used for measurement.
+It will return a `ProfileResults` instance (see more about `ProfileResults` [here](#profileresults)).
 
 For details on options, see [Using the Profiler class](#using-the-profiler-class), as this function uses the exact same options with one important addition:
 
 | Option | Description |
 |--|--|
-| setup | Function - Code to run in the "global" scope. Useful for `require()`s and other otherwise globally defined variables. |
+| setup | Function - Code to run in the "global" scope. Useful for `require()`s and other otherwise globally defined variables |
 
 ### Examples
 
@@ -210,3 +211,34 @@ const results = await bench(f, ['I work!'], {
 When a thread is spawned, it is automatically run with the `--expose-gc` option and will always run `global.gc()` once everything has completed, but before the profiler is finished. This is to give a better insight on ending memory usage (`end_usage_bytes` in the `results` object.).
 
 Obviously there are security implications when it comes to running code in a serialized-to-unserialized way, even if it's in a separate process and you have complete control of the code going in. Be careful as to how and where you use `bench()`, sometimes using the `Profiler` class will be safer.
+
+## ProfileResults
+
+Once `Profiler.end()` or `bench()` is called, it will return a `ProfileResults` instance. This contains all of the profiling data, as well as some extra functions that should help aid in viewing and understanding the data.
+
+The values in the `ProfileResults.data` property are outlined below:
+
+| Property | Description |
+|----------|-------------|
+| start | Number - The timestamp in milliseconds the profiling was started |
+| end | Number - The timestamp in milliseconds the profiling finished |
+| time_elapsed | Number - The amount of time profiling took, in milliseconds |
+| timestep_ms | Number - The amount of milliseconds per memory check |
+| mem_list | Array - List of memory values collected |
+| start_usage_bytes | Number - The amount of bytes being used before or as profiling began |
+| peak_usage_bytes | Number - The largest amount of memory being used at one time |
+| end_usage_bytes | Number - The amount of memory being used by the end of the profile |
+| base_process_bytes | Number - The amount of memory used by the process without anything having been done |
+
+There are a few methods provided that should help make sense of some of the data:
+
+| Method | Description |
+|--------|-------------|
+| averageMemoryUsage() | Get average memory usage throughout the whole profile |
+| medianMemoryUsage() | Get middle memory usage, when list is sorted least to greatest or greatest to least |
+| modeMemoryUsage() | Get most frequently occuring memory value |
+| memoryAtElapsed(ms) | Get the amount of memory being used at a certain point in the profile |
+
+### Extra Notes
+
+If you intend on using this module in automated testing, keep in mind that profiling may take different amounts of time on different machines. This could possibly skew averages and such, so stick to testing on more concrete values like `peak_usage_bytes`.
