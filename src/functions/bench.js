@@ -20,7 +20,7 @@ const { format } = require('path');
  * 
  * Good for using require() and other things that are otherwise declared globally.
  */
-module.exports = async (func, args = [], opts) => {
+module.exports = async (func, args = [], opts = {}) => {
   const child = fork(`${__dirname}/../helpers/thread.js`, { execArgv: ['--expose-gc'] });
   const profiler = new Profiler(child.pid, opts);
 
