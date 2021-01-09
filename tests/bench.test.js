@@ -65,8 +65,8 @@ describe('small data tests', () => {
     // Converted to MB
     const peak = results.data.peak_usage_bytes / (1000 * 1000);
 
-    // Memory must be within 4 MB of potential error.
-    expect(peak > 6 && peak < 10).toBeTruthy();
+    // Memory must be within 6 MB of potential error.
+    expect(peak > 6 && peak < 12).toBeTruthy();
   });
 });
 
