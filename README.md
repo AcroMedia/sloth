@@ -203,9 +203,10 @@ const results = await bench(f, ['I work!'], {
   }
 })
 ```
+\* Linters will probably get pretty pissy at your setup functions, given they define variables that aren't used. Just a heads up.
 
 ### Extra Notes
 
-When a thread is spawned, it is automatically run with the `--expose-gc` option, and will always run it once everything has completed, but before the profiler is finished, in order to give a better insight on ending memory usage (`end_usage_bytes` in the `results` object.)
+When a thread is spawned, it is automatically run with the `--expose-gc` option and will always run `global.gc()` once everything has completed, but before the profiler is finished. This is to give a better insight on ending memory usage (`end_usage_bytes` in the `results` object.).
 
 Obviously there are security implications when it comes to running code in a serialized-to-unserialized way, even if it's in a separate process and you have complete control of the code going in. Be careful as to how and where you use `bench()`, sometimes using the `Profiler` class will be safer.
