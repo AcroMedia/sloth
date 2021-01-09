@@ -94,7 +94,7 @@ While the array is set to null, the memory won't actually change unless the garb
 node --expose-gc index
 ```
 
-You can then do:
+And call the garbage collector:
 ```js
 await profiler.start()
 
@@ -108,3 +108,22 @@ global.gc()
 const results = (await profiler.end()).results
 console.log(results)
 ```
+
+## Using the bench function
+
+The `bench()` function takes a function, throws it into a separate process, runs the profiler on the process, and wraps it all together complete with a bow on top\*.
+
+<sub>* Disclaimer: does not actually provide a bow on top.</sub>
+
+### Calling bench()
+Calling the `bench()` function is done like so:
+```js
+const { bench } = require('memtrace')
+await bench(function, arguments, options)
+```
+
+For details on options, see [Using the Profiler class](#using-the-profiler-class), as this function uses the exact same options, with one addition:
+
+| Option | Description |
+|--|--|
+| setup | Function - Code to run in the "global" scope. Useful for `require()`s and other otherwise globally defined variables. |
