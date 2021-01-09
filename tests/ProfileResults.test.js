@@ -26,7 +26,7 @@ const mockData = {
 }
 
 describe('ProfileResults', () => {
-  it('tests averaging functions', () => {
+  it('tests class functions', () => {
     const results = new ProfileResults(mockData)
 
     expect(results.averageMemoryUsage() === 32651264).toBeTruthy()
