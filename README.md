@@ -72,3 +72,39 @@ let myHugeArr = new Array(1e8).fill(0)
 const results = (await profiler.end()).results
 console.log(results)
 ```
+
+### Extra Notes
+
+Depending on how large the functionality being profiled is, you may want the keep the [Node garbage collector](https://rollout.io/blog/understanding-garbage-collection-in-node-js/) in mind. Consider the following example:
+
+```js
+await profiler.start()
+
+// 100,000,000 zeros
+let myHugeArr = new Array(1e8).fill(0)
+myHugeArr = null
+
+const results = (await profiler.end()).results
+console.log(results)
+```
+
+While the array is set to null, the memory won't actually change unless the garbage collector is run. To change this, run your script with the `--expose-gc` flag, like so:
+
+```sh
+node --expose-gc index
+```
+
+You can then do:
+```js
+await profiler.start()
+
+// 100,000,000 zeros
+let myHugeArr = new Array(1e8).fill(0)
+myHugeArr = null
+
+// Important:
+global.gc()
+
+const results = (await profiler.end()).results
+console.log(results)
+```
