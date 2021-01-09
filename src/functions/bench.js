@@ -41,8 +41,6 @@ module.exports = async (func, args = [], opts = {}) => {
     formatted = setupInternals + ';\n' + formatted
   }
 
-  console.log(formatted)
-
   // Send serialized function.
   child.send({ stage: 'preload', func: formatted, args });
 

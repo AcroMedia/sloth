@@ -69,8 +69,6 @@ describe('large data tests', () => {
     const data = (await prof.end()).results
     const peak = data.peak_usage_bytes / (1000 * 1000)
 
-    console.log(peak)
-
     // Memory must be within 6 MB of potential error
     expect(peak > 1392 && peak < 1398).toBeTruthy();
   });
