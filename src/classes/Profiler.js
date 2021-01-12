@@ -51,7 +51,7 @@ module.exports = class Profiler {
 
     // Setup our message handler for when the process sends the data.
     this.process.on('message', (message) => {
-      this.results = new ProfileResults(message);
+      this.results = message;
 
       // Kill the watcher process.
       this.process.kill();
@@ -78,7 +78,7 @@ module.exports = class Profiler {
       const intr = setInterval(() => {
         if (!this.process) {
           clearInterval(intr);
-          res(this.results);
+          res(new ProfileResults(this.results));
         }
       }, 100);
     });
