@@ -1,6 +1,7 @@
-# Docs
-
-There are two main components, the `Profiler` class and the `bench` function.
+## Table of Contents
+- [Using the Profiler class](#using-the-profiler-class)
+- [Using the bench function](#using-the-bench-function)
+- [ProfileResults](#profileresults)
 
 ## Using the Profiler class
 The `Profiler` class is provided as a quick and easy way of profiling any application, provided you have it's PID, although it's aimed more towards profiling the application it's created in.
