@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 module.exports = class ProfileResults {
   /**
    * Wraps the results of the Profiler into a class.
@@ -90,5 +92,24 @@ module.exports = class ProfileResults {
     if (ms > this.data.time_elapsed) throw new Error('Time provided was greater than total profile time.')
 
     return this.data.mem_list[Math.round(ms/this.data.timestep_ms)]
+  }
+
+  /**
+   * Save data as a snapshot for comparison in future tests.
+   * 
+   * @param {String} filename 
+   * @param {String} path 
+   */
+  saveSnapshot(filename, path = require('path').resolve('.') + '/__snapshots__/') {
+    if (!filename) throw Error('You must provide a file name.')
+
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path)
+    }
+
+    // Mostly just for user reference, not checked in code at all
+    this.data.last_updated = new Date().toLocaleString()
+
+    return fs.writeFileSync(path + filename + '.json', JSON.stringify(this.data), 'utf8')
   }
 }
