@@ -41,3 +41,5 @@ const memtrace = require('memtrace')
 
 const { Profiler, bench } = require('memtrace')
 ```
+
+For more detailed descriptions and code examples, see [DOCS.md](./DOCS.md)
