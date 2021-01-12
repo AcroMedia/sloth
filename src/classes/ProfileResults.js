@@ -1,3 +1,4 @@
+require('colors')
 const fs = require('fs')
 
 module.exports = class ProfileResults {
@@ -112,4 +113,51 @@ module.exports = class ProfileResults {
 
     return fs.writeFileSync(path + filename + '.json', JSON.stringify(this.data), 'utf8')
   }
+
+  /**
+   * Compare the current results to another snapshot.
+   * 
+   * @param {String} path 
+   */
+  compareToSnapshot(path, log = false) {
+    let obj, comparison
+
+    try {
+      obj = JSON.parse(fs.readFileSync(path))
+    } catch(e) {
+      throw e
+    }
+
+    comparison = {
+      time_elapsed: this.data.time_elapsed - obj.time_elapsed,
+      start_usage_bytes: this.data.start_usage_bytes - obj.start_usage_bytes,
+      peak_usage_bytes: this.data.peak_usage_bytes - obj.peak_usage_bytes,
+      end_usage_bytes: this.data.end_usage_bytes - obj.end_usage_bytes
+    }
+
+    if (log) {
+      Object.keys(comparison).forEach(k => {
+        if (k === 'time_elapsed') return console.log(`Time elapsed: ${comparison[k] > 0 ? `+${comparison[k]}ms`.red:`${comparison[k]}ms`.green}`)
+        console.log(`${(k[0].toUpperCase() + k.substr(1)).replace(/\_/g, ' ')}: ${comparison[k] > 0 ? `+${bytes(comparison[k])}`.red:`-${bytes(-comparison[k])}`.green}`)
+      })
+    }
+
+    return comparison
+  }
+}
+
+function bytes(bytes) {
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+
+  if (bytes == 0) {
+    return '0 Bytes'
+  }
+
+  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)))
+
+  if (i == 0) {
+    return bytes + ' ' + sizes[i]
+  }
+
+  return (bytes / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i]
 }
