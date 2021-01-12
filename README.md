@@ -6,9 +6,6 @@ Memtrace (name not final) is a Node module created with the intention of allowin
 
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Using the Profiler class](#using-the-profiler-class)
-  - [Using the bench function](#using-the-bench-function)
-  - [ProfileResults](#profileresults)
 
 # Installation
 
