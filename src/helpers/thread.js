@@ -7,6 +7,8 @@ process.on('message', async (message) => {
     if (message.args) args = message.args
     else args = []
 
+    console.log(String(func))
+
     process.send('preloaded')
   } else if (message.stage === 'start') {
     // Run with await in case of async.
