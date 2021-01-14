@@ -35,5 +35,5 @@ module.exports.getInternals = (fn, args) => {
  * @param {String} str 
  */
 module.exports.wrap = (str, args) => {
-  return `((${args.join(',')}) => { ${str} })()`
+  return `(async (${args.join(',')}) => { ${str} })()`
 }
