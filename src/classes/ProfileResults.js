@@ -149,7 +149,7 @@ module.exports = class ProfileResults {
           this.data.mem_list.length > obj.mem_list.length ? asciichart.red:asciichart.blue,
           this.data.mem_list.length > obj.mem_list.length ? asciichart.blue:asciichart.red
         ]
-      }), '\nBlue - Current Run\nRed - Last Run')
+      }), '\nBlue - Current Run\nRed - Snapshot Run')
     }
 
     return comparison
