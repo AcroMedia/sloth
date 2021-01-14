@@ -21,7 +21,7 @@ let memObj = {
 
 // Check cycle
 setInterval(async () => {
-  let data = await pidusage(pid);
+  let data = await pidusage(pid).catch(e => emergencyStop());
 
   // First check?
   if (memObj.mem_list.length === 0) {
@@ -63,3 +63,7 @@ process.on('message', (message) => {
     }, wait);
   }
 });
+
+function emergencyStop() {
+  process.send(memObj);
+}
