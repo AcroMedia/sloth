@@ -146,8 +146,8 @@ module.exports = class ProfileResults {
       console.log(asciichart.plot([this.data.mem_list.map(n => n / 1024), obj.mem_list.map(n => n / 1024)].sort((a,b) => a.length > b.length), {
         height: 10,
         colors: [
-          asciichart.red,
-          asciichart.blue
+          this.data.mem_list.length > obj.mem_list.length ? asciichart.red:asciichart.blue,
+          this.data.mem_list.length > obj.mem_list.length ? asciichart.blue:asciichart.red
         ]
       }), '\nBlue - Current Run\nRed - Last Run')
     }
