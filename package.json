@@ -20,6 +20,7 @@
   "author": "Acromedia Inc.",
   "license": "ISC",
   "dependencies": {
+    "asciichart": "^1.5.25",
     "colors": "^1.4.0",
     "pidusage": "^2.0.21",
     "serialize-javascript": "^5.0.1"

@@ -1,5 +1,6 @@
 require('colors')
 const fs = require('fs')
+const asciichart = require('asciichart')
 
 module.exports = class ProfileResults {
   /**
@@ -140,6 +141,15 @@ module.exports = class ProfileResults {
         if (k === 'time_elapsed') return console.log(`Time elapsed: ${comparison[k] > 0 ? `+${comparison[k]}ms`.red:`${comparison[k]}ms`.green}`)
         console.log(`${(k[0].toUpperCase() + k.substr(1)).replace(/\_/g, ' ')}: ${comparison[k] > 0 ? `+${bytes(comparison[k])}`.red:`-${bytes(-comparison[k])}`.green}`)
       })
+
+      // Graph memory chart
+      console.log(asciichart.plot([this.data.mem_list.map(n => n / 1024), obj.mem_list.map(n => n / 1024)].sort((a,b) => a.length > b.length), {
+        height: 10,
+        colors: [
+          asciichart.red,
+          asciichart.blue
+        ]
+      }), '\nBlue - Current Run\nRed - Last Run')
     }
 
     return comparison
