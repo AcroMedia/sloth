@@ -3,7 +3,10 @@ const { JSDOM } = require('jsdom')
 const d3 = require('d3')
 
 /**
- * https://github.com/shellyln/chart.js-node-ssr-example
+ * Output memory usage data to SVG line graph
+ * 
+ * @param {Object} data 
+ * @param {String} path 
  */
 module.exports = (data, path) => {
   const dom = new JSDOM('<html><body></body></html>')
