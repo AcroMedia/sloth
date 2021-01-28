@@ -27,9 +27,7 @@ module.exports = (data, path) => {
 
   // Data mapping
   let chartData = data.map(d => {
-    let i = 0;
-    return d.map(val => {
-      i++
+    return d.map((val, i) => {
       return {
         x: i,
         y: val
