@@ -37,6 +37,9 @@ module.exports = (data, path) => {
     })
   })
 
+  // Get the largest of the two arrays so we can scale the graph properly
+  const largest = chartData.sort((a, b) => a.length < b.length)[0]
+
   // Dimensions
   const x = d3.scaleLinear().range([0, w])
   const y = d3.scaleLinear().range([h, 0])
@@ -46,8 +49,8 @@ module.exports = (data, path) => {
     .y((d) => y(d.y))
     .curve(d3.curveLinear)
 
-  x.domain(d3.extent(chartData[0], (d) => d.x))
-  y.domain([0, d3.max(chartData[0], (d) => d.y)])
+  x.domain(d3.extent(largest, (d) => d.x))
+  y.domain([0, d3.max(largest, (d) => d.y)])
 
   // First path
   svg.append('svg:path')
