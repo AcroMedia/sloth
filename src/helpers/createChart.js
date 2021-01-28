@@ -65,7 +65,5 @@ module.exports = (data, path) => {
   svg.append('g')
     .call(d3.axisLeft(y))
 
-  console.log(dom.window.document.body.innerHTML)
-
   fs.writeFileSync(path, dom.window.document.body.innerHTML)
 }
