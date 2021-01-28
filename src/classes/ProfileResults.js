@@ -119,8 +119,12 @@ module.exports = class ProfileResults {
    * Compare the current results to another snapshot.
    * 
    * @param {String} path 
+   * @param {Object} options
+   * @param {Boolean=} [options.logResultsDiff=false]
+   * @param {String=} options.graph
+   * @param {String=} options.graph_path
    */
-  compareToSnapshot(path, log = false) {
+  compareToSnapshot(path, options) {
     let obj, comparison
 
     try {
@@ -136,20 +140,29 @@ module.exports = class ProfileResults {
       end_usage_bytes: this.data.end_usage_bytes - obj.end_usage_bytes
     }
 
-    if (log) {
+    if (options.logResultsDiff) {
       Object.keys(comparison).forEach(k => {
         if (k === 'time_elapsed') return console.log(`Time elapsed: ${comparison[k] > 0 ? `+${comparison[k]}ms`.red:`${comparison[k]}ms`.green}`)
         console.log(`${(k[0].toUpperCase() + k.substr(1)).replace(/\_/g, ' ')}: ${comparison[k] > 0 ? `+${bytes(comparison[k])}`.red:`-${bytes(-comparison[k])}`.green}`)
       })
+    }
 
-      // Graph memory chart
-      console.log(asciichart.plot([this.data.mem_list.map(n => n / 1024), obj.mem_list.map(n => n / 1024)].sort((a,b) => a.length > b.length), {
-        height: 10,
-        colors: [
-          this.data.mem_list.length > obj.mem_list.length ? asciichart.red:asciichart.blue,
-          this.data.mem_list.length > obj.mem_list.length ? asciichart.blue:asciichart.red
-        ]
-      }), '\nBlue - Current Run\nRed - Snapshot Run')
+    if (options.graph) {
+      if (options.graph === 'text') {
+        // Graph memory chart
+        console.log(asciichart.plot([this.data.mem_list.map(n => n / 1024), obj.mem_list.map(n => n / 1024)].sort((a,b) => a.length > b.length), {
+          height: 10,
+          colors: [
+            this.data.mem_list.length > obj.mem_list.length ? asciichart.red:asciichart.blue,
+            this.data.mem_list.length > obj.mem_list.length ? asciichart.blue:asciichart.red
+          ]
+        }), '\nBlue - Current Run\nRed - Snapshot Run')
+      } else if (options.graph === 'image') {
+        const imageName = new Date.now() + '.png'
+        const imagePath = options.graph_path ? options.graph_path + '/' + imageName : require('path').resolve('.') + imageName
+
+        console.log(`Memory usage graph saved to ${imagePath}!`)
+      }
     }
 
     return comparison
