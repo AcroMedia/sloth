@@ -7,15 +7,22 @@ const d3 = require('d3')
  */
 module.exports = (data, path) => {
   const dom = new JSDOM('<html><body></body></html>')
-  const margin = {top: 20, right: 20, bottom: 30, left: 50}
+  const margin = {top: 20, right: 20, bottom: 30, left: 60}
   const w = 900 - margin.left - margin.right
   const h = 500 - margin.top - margin.bottom
 
   let svg = d3.select(dom.window.document).select('body')
-    .append('svg')    // Background
+    .append('svg')
     .attr('width', w + margin.left + margin.right)
     .attr('height', h + margin.top + margin.bottom)
-    .append('g')
+
+  // Background cheat
+  svg.append('rect')
+    .attr('fill', 'white')
+    .attr('width', '100%')
+    .attr('height', '100%')
+    
+  svg = svg.append('g')
     .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
   // Data mapping
