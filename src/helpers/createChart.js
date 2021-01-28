@@ -3,7 +3,10 @@ const { JSDOM } = require('jsdom')
 const d3 = require('d3')
 
 /**
- * https://github.com/shellyln/chart.js-node-ssr-example
+ * Output memory usage data to SVG line graph
+ * 
+ * @param {Object} data 
+ * @param {String} path 
  */
 module.exports = (data, path) => {
   const dom = new JSDOM('<html><body></body></html>')
@@ -38,10 +41,11 @@ module.exports = (data, path) => {
   // Get the largest of the two arrays so we can scale the graph properly
   const largest = chartData.sort((a, b) => a.length < b.length)[0]
 
-  // Dimensions
+  // Dimension functions, used for data scaling
   const x = d3.scaleLinear().range([0, w])
   const y = d3.scaleLinear().range([h, 0])
 
+  // Use scaling functions from before to create a new line creating function
   const lineFunc = d3.line()
     .x((d) => x(d.x))
     .y((d) => y(d.y))
@@ -57,7 +61,7 @@ module.exports = (data, path) => {
     .attr('stroke-width', 2)
     .attr('fill', 'none')
 
-  // Second path
+  // Second (shorter if not the same) path
   svg.append('svg:path')
     .attr('d', lineFunc(chartData[1]))
     .attr('stroke', 'red')
