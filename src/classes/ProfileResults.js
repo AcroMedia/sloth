@@ -1,6 +1,7 @@
 require('colors')
 const fs = require('fs')
 const asciichart = require('asciichart')
+const createChart = require('../helpers/createChart')
 
 module.exports = class ProfileResults {
   /**
@@ -148,9 +149,11 @@ module.exports = class ProfileResults {
     }
 
     if (options.graph) {
+      const chartData = [this.data.mem_list.map(n => n / 1024), obj.mem_list.map(n => n / 1024)]
+
       if (options.graph === 'text') {
         // Graph memory chart
-        console.log(asciichart.plot([this.data.mem_list.map(n => n / 1024), obj.mem_list.map(n => n / 1024)].sort((a,b) => a.length > b.length), {
+        console.log(asciichart.plot(chartData.sort((a,b) => a.length > b.length), {
           height: 10,
           colors: [
             this.data.mem_list.length > obj.mem_list.length ? asciichart.red:asciichart.blue,
@@ -158,8 +161,10 @@ module.exports = class ProfileResults {
           ]
         }), '\nBlue - Current Run\nRed - Snapshot Run')
       } else if (options.graph === 'image') {
-        const imageName = new Date.now() + '.png'
-        const imagePath = options.graph_path ? options.graph_path + '/' + imageName : require('path').resolve('.') + imageName
+        const imageName = Date.now() + '.svg'
+        const imagePath = options.graph_path ? options.graph_path + '/' + imageName : require('path').resolve('.') + '/' + imageName
+
+        createChart(chartData, imagePath)
 
         console.log(`Memory usage graph saved to ${imagePath}!`)
       }

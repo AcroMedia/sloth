@@ -1,0 +1,71 @@
+const fs = require('fs')
+const { JSDOM } = require('jsdom')
+const d3 = require('d3')
+
+/**
+ * https://github.com/shellyln/chart.js-node-ssr-example
+ */
+module.exports = (data, path) => {
+  const dom = new JSDOM('<html><body></body></html>')
+  const margin = {top: 20, right: 20, bottom: 30, left: 50}
+  const w = 900 - margin.left - margin.right
+  const h = 500 - margin.top - margin.bottom
+
+  let svg = d3.select(dom.window.document).select('body')
+    .append('svg')    // Background
+    .attr('width', w + margin.left + margin.right)
+    .attr('height', h + margin.top + margin.bottom)
+    .append('g')
+    .attr('transform', `translate(${margin.left}, ${margin.top})`)
+
+  // Data mapping
+  let chartData = data.map(d => {
+    let i = 0;
+    return d.map(val => {
+      i++
+      return {
+        x: i,
+        y: val
+      }
+    })
+  })
+
+  // Dimensions
+  const x = d3.scaleLinear().range([0, w])
+  const y = d3.scaleLinear().range([h, 0])
+
+  const lineFunc = d3.line()
+    .x((d) => x(d.x))
+    .y((d) => y(d.y))
+    .curve(d3.curveLinear)
+
+  x.domain(d3.extent(chartData[0], (d) => d.x))
+  y.domain([0, d3.max(chartData[0], (d) => d.y)])
+
+  // First path
+  svg.append('svg:path')
+    .attr('d', lineFunc(chartData[0]))
+    .attr('stroke', 'blue')
+    .attr('stroke-width', 2)
+    .attr('fill', 'none')
+
+  // Second path
+  svg.append('svg:path')
+    .attr('d', lineFunc(chartData[1]))
+    .attr('stroke', 'red')
+    .attr('stroke-width', 2)
+    .attr('fill', 'none')
+
+  // X axis
+  svg.append('g')
+    .attr('transform', `translate(0, ${h})`)
+    .call(d3.axisBottom(x))
+
+  // Y axis
+  svg.append('g')
+    .call(d3.axisLeft(y))
+
+  console.log(dom.window.document.body.innerHTML)
+
+  fs.writeFileSync(path, dom.window.document.body.innerHTML)
+}
