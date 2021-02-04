@@ -20,6 +20,9 @@ const ProfileResults = require('../classes/ProfileResults')
  * 
  * Good for using require() and other things that are otherwise declared globally.
  * 
+ * @param {Array} opts.requirements
+ * Array of required packages. Good alternative to the setup function 
+ * 
  * @returns {ProfileResults}
  */
 module.exports = async (func, args = [], opts = {}) => {
@@ -42,6 +45,19 @@ module.exports = async (func, args = [], opts = {}) => {
     // Prepend the internal function with setup code.
     formatted = setupInternals + ';\n' + formatted
   }
+
+  // Do we have package requirements
+  if (opts.requirements && opts.requirements.length > 0) {
+    let requires = ''
+
+    opts.requirements.forEach(r => {
+      requires += `const ${r.name} = require('${r.path}');\n`
+    })
+
+    formatted = requires + '\n' + formatted
+  }
+
+  console.log(formatted)
 
   // Send serialized function.
   child.send({ stage: 'preload', func: formatted, args });
