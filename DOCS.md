@@ -107,6 +107,7 @@ For details on options, see [Using the Profiler class](#using-the-profiler-class
 | Option | Description |
 |--|--|
 | setup | Function - Code to run in the "global" scope. Useful for `require()`s and other otherwise globally defined variables |
+| requirements | Array - A nicer alternative to `setup`. Each item should be an object with a `name` (what it's defined as) and `path` (what is actually `require`ed) |
 
 ### Examples
 
@@ -182,6 +183,24 @@ const results = await bench(f, ['I work!'], {
 })
 ```
 \* Linters will probably get pretty pissy at your setup functions, given they define variables that aren't used. Just a heads up.
+
+Using a requirements array
+```js
+// Logging a "globally" defined variable
+function f() {
+  filesystem.writeFileSync('test.txt', 'test')
+}
+
+const results = await bench(f, [], {
+  requirements: [
+    {
+      // Parsed as `const filesystem = require('fs')`
+      name: 'filesystem',
+      path: 'fs'
+    }
+  ]
+})
+```
 
 ### Extra Notes
 
