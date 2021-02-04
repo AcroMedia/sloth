@@ -186,7 +186,7 @@ const results = await bench(f, ['I work!'], {
 
 Using a requirements array
 ```js
-// Logging a "globally" defined variable
+// Using a package
 function f() {
   filesystem.writeFileSync('test.txt', 'test')
 }
