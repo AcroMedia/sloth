@@ -37,6 +37,9 @@ module.exports = async (func, args = [], opts = {}) => {
   let formatted = wrap(internals.fn, internals.fnArgs);
   let results;
 
+  // Make sure `require()` exists
+  formatted = 'console.log(global.require);\n' + formatted;
+
   // Do we have a "setup" function?
   if (opts.setup && typeof opts.setup === 'function') {
     // Serialize the setup function
