@@ -1,6 +1,6 @@
 # Description
 
-Memtrace (name not final) is a Node module created with the intention of allowing easy and versatile memory profiling in NodeJS scripts, projects, and tests.
+sloth (name not final) is a Node module created with the intention of allowing easy and versatile memory profiling in NodeJS scripts, projects, and tests.
 
 ## Table of Contents
 
@@ -15,32 +15,32 @@ Memtrace (name not final) is a Node module created with the intention of allowin
 
 - With npm:
   ```sh
-  npm install memtrace
+  npm install sloth
   ```
 
 - With yarn:
   ```sh
-  yarn add memtrace
+  yarn add sloth
   ```
 
 # Usage
 
 ES6 `import`s:
 ```js
-import * as memtrace from 'memtrace'
+import * as sloth from 'sloth'
 
 // OR
 
-import { Profiler, bench } from 'memtrace'
+import { Profiler, bench } from 'sloth'
 ```
 
 Using `require`s:
 ```js
-const memtrace = require('memtrace')
+const sloth = require('sloth')
 
 // OR
 
-const { Profiler, bench } = require('memtrace')
+const { Profiler, bench } = require('sloth')
 ```
 
 For more detailed descriptions and code examples, see below:
@@ -57,7 +57,7 @@ The `Profiler` class is provided as a quick and easy way of profiling any applic
 
 ### Creating an instance
 ```js
-const { Profiler } = require('memtrace')
+const { Profiler } = require('sloth')
 const profiler = new Profiler(pid, options)
 ```
 
@@ -80,7 +80,7 @@ Methods are described below, all are async:
 
 Creating a new Profiler instance that will keep track of it's own process's usage:
 ```js
-const { Profiler } = require('memtrace')
+const { Profiler } = require('sloth')
 const profiler = new Profiler(process.pid, {
   timestep: 100,
   wait: 1000,
@@ -145,7 +145,7 @@ The `bench()` function takes a function, throws it into a separate process, runs
 ### Calling bench()
 Calling the `bench()` function is done like so:
 ```js
-const { bench } = require('memtrace')
+const { bench } = require('sloth')
 await bench(function, arguments, options)
 ```
 

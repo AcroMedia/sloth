@@ -1,5 +1,5 @@
 {
-  "name": "memtrace",
+  "name": "sloth",
   "version": "1.0.0",
   "description": "Resource profiler for node, utilizing child processes",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@git.acromedia.com:teams/id/memtrace.git"
+    "url": "git@github.com:AcroMedia/sloth.git"
   },
   "keywords": [
     "profiling",
