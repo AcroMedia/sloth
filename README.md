@@ -1,6 +1,6 @@
 # Description
 
-sloth (name not final) is a Node module created with the intention of allowing easy and versatile memory profiling in NodeJS scripts, projects, and tests.
+Sloth is a Node module created with the intention of allowing easy and versatile memory profiling in NodeJS scripts, projects, and tests.
 
 ## Table of Contents
 
