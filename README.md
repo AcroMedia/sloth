@@ -127,7 +127,7 @@ describe('test test', () => {
     
     // Should've taken less than 5 seconds
     // (I doubt it'd actually take that little time, but it's just an example)
-    expect(results.time_elapsed > 5000).toBeTruthy()
+    expect(results.time_elapsed < 5000).toBeTruthy()
   })
 })
 ```
