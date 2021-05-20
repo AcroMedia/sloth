@@ -100,6 +100,38 @@ const results = (await profiler.end()).results
 console.log(results)
 ```
 
+Using the Profiler within Jest
+```js
+const { Profiler } = require('sloth')
+
+// Your Jest test suite
+describe('test test', () => {
+  // To make the tests cleaner, you should probably make them async
+  it ('does something', async () => {
+    const profiler = new Profiler(process.pid, {
+      timestep: 100,
+      wait: 1000,
+      // This will shave off all of the memory currently
+      // taken up by the Jest test. This way, it'll be more
+      // accurate in case you just did a bunch of crazy
+      // stuff before and didn't clean it all up properly.
+      trimNodeProcessUsage: true
+    })
+
+    await profiler.start()
+
+    // 100,000,000 zeros
+    let myHugeArr = new Array(1e8).fill(0)
+
+    const results = (await profiler.end()).results
+    
+    // Should've taken less than 5 seconds
+    // (I doubt it'd actually take that little time, but it's just an example)
+    expect(results.time_elapsed > 5000).toBeTruthy()
+  })
+})
+```
+
 ### Extra Notes
 
 Depending on how large the functionality being profiled is, you may want the keep the [Node garbage collector](https://rollout.io/blog/understanding-garbage-collection-in-node-js/) in mind. Consider the following example:
@@ -248,38 +280,6 @@ const results = await bench(f, [], {
       path: 'fs'
     }
   ]
-})
-```
-
-Using the Profiler within Jest
-```js
-const { Profiler } = require('sloth')
-
-// Your Jest test suite
-describe('test test', () => {
-  // To make the tests cleaner, you should probably make them async
-  it ('does something', async () => {
-    const profiler = new Profiler(process.pid, {
-      timestep: 100,
-      wait: 1000,
-      // This will shave off all of the memory currently
-      // taken up by the Jest test. This way, it'll be more
-      // accurate in case you just did a bunch of crazy
-      // stuff before and didn't clean it all up properly.
-      trimNodeProcessUsage: true
-    })
-
-    await profiler.start()
-
-    // 100,000,000 zeros
-    let myHugeArr = new Array(1e8).fill(0)
-
-    const results = (await profiler.end()).results
-    
-    // Should've taken less than 5 seconds
-    // (I doubt it'd actually take that little time, but it's just an example)
-    expect(results.time_elapsed > 5000).toBeTruthy()
-  })
 })
 ```
 
