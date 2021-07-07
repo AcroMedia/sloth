@@ -85,6 +85,18 @@ describe('small data tests', () => {
       }]
     });
   });
+
+  it('tests errors', async () => {
+    // Not providing a proper function
+    expect(async () => {
+      await bench('');
+    }).rejects.toThrow();
+
+    // Not providing arguments as array
+    expect(async () => {
+      await bench(() => {}, '');
+    }).rejects.toThrow();
+  });
 });
 
 describe('large data tests', () => {
