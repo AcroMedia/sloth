@@ -1,7 +1,6 @@
 const { fork } = require('child_process');
 const Profiler = require('../classes/Profiler');
 const { getInternals, wrap } = require('../helpers/fnFormat');
-const ProfileResults = require('../classes/ProfileResults');
 
 /**
  * Benchmarks a function in an isolated process.
@@ -22,8 +21,6 @@ const ProfileResults = require('../classes/ProfileResults');
  *
  * @param {Array} opts.requirements
  * Array of required packages. Good alternative to the setup function
- *
- * @returns {ProfileResults}
  */
 module.exports = async (func, args = [], opts = {}) => {
   const child = fork(`${__dirname}/../helpers/thread.js`, { execArgv: ['--expose-gc'] });
@@ -73,11 +70,11 @@ module.exports = async (func, args = [], opts = {}) => {
   });
 
   // Wait until we have data back, then resolve.
-  return new Promise((res) => {
+  return new Promise((resolve) => {
     const intr = setInterval(() => {
       if (results) {
         clearInterval(intr);
-        res(results);
+        resolve(results);
       }
     }, 500);
   });

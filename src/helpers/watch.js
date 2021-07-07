@@ -49,6 +49,8 @@ process.on('message', (message) => {
 
       // Use callbacks since exit handler doesn't like async.
       pidusage(pid, (err, data) => {
+        if (err) console.error(err);
+
         // Set end usage bytes
         memObj.end_usage_bytes = trim ? data.memory - memObj.base_process_bytes : data.memory;
 

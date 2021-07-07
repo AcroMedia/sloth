@@ -1,6 +1,7 @@
 let func,
   args;
 
+/* eslint-disable */
 process.on('message', async (message) => {
   if (message.stage === 'preload') {
     // Convert serialized function to actual.

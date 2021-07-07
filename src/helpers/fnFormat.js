@@ -30,7 +30,7 @@ module.exports.getInternals = (fn, args) => {
 };
 
 /**
- * Creates a function that will automatically call itself when used in the JS Function() constructor.
+ * Creates a function that will automatically call itself when used in the JS Function() constructor
  *
  * @param {String} str
  */
