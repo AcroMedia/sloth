@@ -1,5 +1,6 @@
 require('colors');
 const fs = require('fs');
+const _path = require('path');
 const asciichart = require('asciichart');
 const createChart = require('../helpers/createChart');
 
@@ -75,7 +76,7 @@ module.exports = class ProfileResults {
 
     this.data.mem_list.forEach((m) => {
       if (!freqMap[m]) freqMap[m] = 1;
-      else freqMap[m]++;
+      else freqMap[m] += 1;
 
       if (freqMap[m] > maxCount) {
         maxCount = freqMap[m];
@@ -103,7 +104,7 @@ module.exports = class ProfileResults {
    * @param {String} filename
    * @param {String} path
    */
-  saveSnapshot (filename, path = `${require('path').resolve('.')}/__snapshots__/`) {
+  saveSnapshot (filename, path = `${_path.resolve('.')}/__snapshots__/`) {
     if (!filename) throw Error('You must provide a file name.');
 
     if (!fs.existsSync(path)) {
@@ -126,8 +127,13 @@ module.exports = class ProfileResults {
    * @param {String=} options.graph_path
    */
   compareToSnapshot (path, options) {
-    let obj,
-      comparison;
+    let obj;
+    const comparison = {
+      time_elapsed: this.data.time_elapsed - obj.time_elapsed,
+      start_usage_bytes: this.data.start_usage_bytes - obj.start_usage_bytes,
+      peak_usage_bytes: this.data.peak_usage_bytes - obj.peak_usage_bytes,
+      end_usage_bytes: this.data.end_usage_bytes - obj.end_usage_bytes
+    };
 
     try {
       obj = JSON.parse(fs.readFileSync(path));
@@ -135,17 +141,10 @@ module.exports = class ProfileResults {
       throw e;
     }
 
-    comparison = {
-      time_elapsed: this.data.time_elapsed - obj.time_elapsed,
-      start_usage_bytes: this.data.start_usage_bytes - obj.start_usage_bytes,
-      peak_usage_bytes: this.data.peak_usage_bytes - obj.peak_usage_bytes,
-      end_usage_bytes: this.data.end_usage_bytes - obj.end_usage_bytes
-    };
-
     if (options.logResultsDiff) {
       Object.keys(comparison).forEach((k) => {
         if (k === 'time_elapsed') return console.log(`Time elapsed: ${comparison[k] > 0 ? `+${comparison[k]}ms`.red : `${comparison[k]}ms`.green}`);
-        console.log(`${(k[0].toUpperCase() + k.substr(1)).replace(/\_/g, ' ')}: ${comparison[k] > 0 ? `+${bytes(comparison[k])}`.red : `-${bytes(-comparison[k])}`.green}`);
+        return console.log(`${(k[0].toUpperCase() + k.substr(1)).replace(/_/g, ' ')}: ${comparison[k] > 0 ? `+${bytes(comparison[k])}`.red : `-${bytes(-comparison[k])}`.green}`);
       });
     }
 
@@ -163,7 +162,7 @@ module.exports = class ProfileResults {
         }), '\nBlue - Current Run\nRed - Snapshot Run');
       } else if (options.graph === 'image') {
         const imageName = `${Date.now()}.svg`;
-        const imagePath = options.graph_path ? `${options.graph_path}/${imageName}` : `${require('path').resolve('.')}/${imageName}`;
+        const imagePath = options.graph_path ? `${options.graph_path}/${imageName}` : `${_path.resolve('.')}/${imageName}`;
 
         createChart(chartData, imagePath);
 
@@ -175,18 +174,18 @@ module.exports = class ProfileResults {
   }
 };
 
-function bytes (bytes) {
+function bytes (val) {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 
-  if (bytes == 0) {
+  if (val === 0) {
     return '0 Bytes';
   }
 
-  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+  const i = parseInt(Math.floor(Math.log(val) / Math.log(1024)), 10);
 
-  if (i == 0) {
-    return `${bytes} ${sizes[i]}`;
+  if (i === 0) {
+    return `${val} ${sizes[i]}`;
   }
 
-  return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
+  return `${val / (1024 ** i).toFixed(2)} ${sizes[i]}`;
 }

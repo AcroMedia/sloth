@@ -28,7 +28,7 @@ module.exports = class Profiler {
     this.results = null;
     this.process = null;
 
-    if (opts && typeof opts !== 'object') opts = {};
+    if (opts && typeof opts !== 'object') throw new Error('Provided options was not an object.');
 
     // Optional params
     this.toFile = opts.toFile || false;
@@ -59,9 +59,9 @@ module.exports = class Profiler {
     });
 
     // Ensure process can get an accurate baseline by waiting a few cycles before beginning.
-    return new Promise((res) => {
+    return new Promise((resolve) => {
       setTimeout(() => {
-        res(this);
+        resolve(this);
       }, this.timestep * 3);
     });
   }
@@ -74,11 +74,11 @@ module.exports = class Profiler {
     // Once we have the data, we can safely kill the process.
     this.process.send('stop');
 
-    return new Promise((res) => {
+    return new Promise((resolve) => {
       const intr = setInterval(() => {
         if (!this.process) {
           clearInterval(intr);
-          res(new ProfileResults(this.results));
+          resolve(new ProfileResults(this.results));
         }
       }, 100);
     });
