@@ -47,7 +47,7 @@ describe('small data tests', () => {
     expect(typeof await bench(async () => false)).toBe('object');
   });
 
-  it('ensures data consistancy with small data', async () => {
+  it('ensures data consistency with small data', async () => {
     // Function to test
     function a() {
       // Fill up an array with one million 0s.

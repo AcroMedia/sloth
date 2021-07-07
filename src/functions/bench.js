@@ -37,9 +37,6 @@ module.exports = async (func, args = [], opts = {}) => {
   let formatted = wrap(internals.fn, internals.fnArgs);
   let results;
 
-  // Make sure `require()` exists
-  formatted = 'console.log(global.require);\n' + formatted;
-
   // Do we have a "setup" function?
   if (opts.setup && typeof opts.setup === 'function') {
     // Serialize the setup function
@@ -59,8 +56,6 @@ module.exports = async (func, args = [], opts = {}) => {
 
     formatted = requires + '\n' + formatted
   }
-
-  console.log(formatted)
 
   // Send serialized function.
   child.send({ stage: 'preload', func: formatted, args });

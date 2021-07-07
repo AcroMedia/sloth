@@ -4,7 +4,8 @@
   "description": "Resource profiler for node, utilizing child processes",
   "main": "index.js",
   "scripts": {
-    "test": "jest --coverage"
+    "test-min": "jest --coverage -t=\"small data tests|ProfileResults\"",
+    "test-all": "jest --coverage"
   },
   "repository": {
     "type": "git",
