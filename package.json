@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test-min": "jest --coverage -t=\"small data tests|ProfileResults\"",
-    "test-all": "jest --coverage"
+    "test-all": "jest --coverage",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
