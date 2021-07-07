@@ -45,6 +45,12 @@ describe('small data tests', () => {
 
     // Async anon arrow function, no brackets
     expect(typeof await bench(async () => false)).toBe('object');
+
+    // Function with args (wrapped)
+    expect(typeof await bench((x, y) => x + y, [1, 1])).toBe('object');
+
+    // Function with args (not wrapped)
+    expect(typeof await bench(x => x, ['1'])).toBe('object');
   });
 
   it('ensures data consistency with small data', async () => {

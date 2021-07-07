@@ -8,7 +8,17 @@ const serial = require('serialize-javascript');
  */
 module.exports.getInternals = (fn, args) => {
   const fnString = String(fn);
-  let fnArgs = fnString.split('(')[1].split(')')[0].split(',');
+  let fnArgs;
+
+  // Arrow function with no brackets?
+  if (fnString.split('=>') && !fnString.split('=>')[0].includes('(')) {
+    fnArgs = fnString.split('=>')[0].split(',');
+  } else {
+    fnArgs = fnString.split('(')[1].split(')')[0].split(',');
+  }
+
+  console.log(fnArgs);
+
   let internal;
 
   fnArgs = args && args.length > 0 ? fnArgs.map((a) => {
