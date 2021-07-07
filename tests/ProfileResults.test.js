@@ -1,3 +1,4 @@
+const colors = require('colors');
 const mockData = {
   start: Date.now(),
   end: Date.now() + 1200,
@@ -31,6 +32,8 @@ jest.mock('fs', () => ({
 }));
 
 const ProfileResults = require('../src/classes/ProfileResults');
+
+colors.disable();
 
 describe('ProfileResults', () => {
   it('tests class functions', () => {
@@ -90,8 +93,15 @@ describe('ProfileResults', () => {
   it('tests diff logging', () => {
     const results = new ProfileResults(mockData);
 
-    expect(() => results.compareToSnapshot('', {
+    console.log = jest.fn();
+
+    results.compareToSnapshot('', {
       logResultsDiff: true
-    }));
+    });
+
+    expect(console.log.mock.calls[0][0]).toBe('Time elapsed: 0ms');
+    expect(console.log.mock.calls[1][0]).toBe('Start usage bytes: -0 Bytes');
+    expect(console.log.mock.calls[2][0]).toBe('Peak usage bytes: -0 Bytes');
+    expect(console.log.mock.calls[3][0]).toBe('End usage bytes: -0 Bytes');
   });
 });
