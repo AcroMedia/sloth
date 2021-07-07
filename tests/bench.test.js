@@ -68,6 +68,23 @@ describe('small data tests', () => {
     expect(peak).toBeGreaterThan(6);
     expect(peak).toBeLessThan(14);
   });
+
+  it('tests setup function', async () => {
+    await bench(() => {}, [], {
+      setup: () => {
+        console.log('setup test');
+      }
+    });
+  });
+
+  it('tests requirements array', async () => {
+    await bench(() => {}, [], {
+      requirements: [{
+        name: 'fs',
+        path: 'fs'
+      }]
+    });
+  });
 });
 
 describe('large data tests', () => {

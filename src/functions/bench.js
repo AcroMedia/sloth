@@ -23,7 +23,9 @@ const { getInternals, wrap } = require('../helpers/fnFormat');
  * Array of required packages. Good alternative to the setup function
  */
 module.exports = async (func, args = [], opts = {}) => {
-  const child = fork(`${__dirname}/../helpers/thread.js`, { execArgv: ['--expose-gc'] });
+  const child = fork(`${__dirname}/../helpers/thread.js`, {
+    execArgv: ['--expose-gc']
+  });
   const profiler = new Profiler(child.pid, opts);
 
   // Argument type errors to prevent cryptic errors when formatting/passing stuff around.

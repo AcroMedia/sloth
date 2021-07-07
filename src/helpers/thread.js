@@ -12,7 +12,11 @@ process.on('message', async (message) => {
     process.send('preloaded');
   } else if (message.stage === 'start') {
     // Run with await in case of async.
-    await func(...args);
+    try {
+      await func(...args);
+    } catch(e) {
+      console.error(e);
+    }
 
     // Run JS garbage collector.
     global.gc();
