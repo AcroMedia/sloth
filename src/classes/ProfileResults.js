@@ -126,20 +126,21 @@ module.exports = class ProfileResults {
    * @param {String=} options.graph
    * @param {String=} options.graph_path
    */
-  compareToSnapshot (path, options) {
+  compareToSnapshot (path, options = {}) {
     let obj;
-    const comparison = {
-      time_elapsed: this.data.time_elapsed - obj.time_elapsed,
-      start_usage_bytes: this.data.start_usage_bytes - obj.start_usage_bytes,
-      peak_usage_bytes: this.data.peak_usage_bytes - obj.peak_usage_bytes,
-      end_usage_bytes: this.data.end_usage_bytes - obj.end_usage_bytes
-    };
 
     try {
       obj = JSON.parse(fs.readFileSync(path));
     } catch (e) {
       throw e;
     }
+
+    const comparison = {
+      time_elapsed: this.data.time_elapsed - obj.time_elapsed,
+      start_usage_bytes: this.data.start_usage_bytes - obj.start_usage_bytes,
+      peak_usage_bytes: this.data.peak_usage_bytes - obj.peak_usage_bytes,
+      end_usage_bytes: this.data.end_usage_bytes - obj.end_usage_bytes
+    };
 
     if (options.logResultsDiff) {
       Object.keys(comparison).forEach((k) => {

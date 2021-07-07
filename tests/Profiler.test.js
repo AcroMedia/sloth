@@ -4,10 +4,10 @@ describe('small data tests', () => {
   it('ensures constructor works without options', () => {
     const prof = new Profiler(123);
 
-    expect(prof.toWatch === 123).toBeTruthy();
+    expect(prof.toWatch).toBe(123);
     expect(prof.toFile).toBeFalsy();
-    expect(prof.timestep === 100).toBeTruthy();
-    expect(prof.wait === 0).toBeTruthy();
+    expect(prof.timestep).toBe(100);
+    expect(prof.wait).toBe(0);
   });
 
   it('ensures options are applied correctly', () => {
@@ -17,9 +17,9 @@ describe('small data tests', () => {
       waitAfterEnd: 1000
     });
 
-    expect(prof.timestep === 50).toBeTruthy();
+    expect(prof.timestep).toBe(50);
     expect(prof.toFile).toBeTruthy();
-    expect(prof.wait === 1000).toBeTruthy();
+    expect(prof.wait).toBe(1000);
   });
 
   it('ensures data consistancy with small data', async () => {
@@ -43,8 +43,8 @@ describe('small data tests', () => {
     // Converted to MB
     const peak = results.data.peak_usage_bytes / (1000 * 1000);
 
-    // Memory must be within 4 MB of potential error.
-    expect(peak > 6 && peak < 10).toBeTruthy();
+    expect(peak).toBeGreaterThan(6);
+    expect(peak).toBeLessThan(14);
   });
 });
 
@@ -69,8 +69,7 @@ describe('large data tests', () => {
     const results = await prof.end();
     const peak = results.data.peak_usage_bytes / (1000 * 1000);
 
-    // Memory must be within 6 MB of potential error
-    expect((peak > 1392 && peak < 1398) ||
-            (peak > 1192 && peak < 1198)).toBeTruthy();
+    expect(peak).toBeGreaterThan(1190);
+    expect(peak).toBeLessThan(1400);
   });
 });
