@@ -17,8 +17,6 @@ module.exports.getInternals = (fn, args) => {
     fnArgs = fnString.split('(')[1].split(')')[0].split(',');
   }
 
-  console.log(fnArgs);
-
   let internal;
 
   fnArgs = args && args.length > 0 ? fnArgs.map((a) => {
