@@ -1,4 +1,5 @@
 const colors = require('colors');
+
 const mockData = {
   start: Date.now(),
   end: Date.now() + 1200,
@@ -28,8 +29,11 @@ jest.mock('fs', () => ({
   existsSync: jest.fn(() => true),
   mkdirSync: jest.fn(),
   writeFileSync: jest.fn((path, data) => ({ path, data })),
-  readFileSync: jest.fn(path => JSON.stringify(mockData))
+  readFileSync: jest.fn(() => JSON.stringify(mockData))
 }));
+
+jest.mock('../src/helpers/createChart', () => jest.fn());
+const createChart = require('../src/helpers/createChart');
 
 const ProfileResults = require('../src/classes/ProfileResults');
 
@@ -103,5 +107,21 @@ describe('ProfileResults', () => {
     expect(console.log.mock.calls[1][0]).toBe('Start usage bytes: -0 Bytes');
     expect(console.log.mock.calls[2][0]).toBe('Peak usage bytes: -0 Bytes');
     expect(console.log.mock.calls[3][0]).toBe('End usage bytes: -0 Bytes');
+  });
+
+  it('tests diffferent graph calls', () => {
+    const results = new ProfileResults(mockData);
+
+    results.compareToSnapshot('', {
+      graph: 'text'
+    });
+
+    expect(createChart).not.toHaveBeenCalled();
+
+    results.compareToSnapshot('', {
+      graph: 'image'
+    });
+
+    expect(createChart).toHaveBeenCalled();
   });
 });
