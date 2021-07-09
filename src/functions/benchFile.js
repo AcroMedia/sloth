@@ -26,11 +26,6 @@ module.exports = async (path, nodeArgs = [], cliArgs = []) => {
   // Find instances of require(), fix them using our funky global way
   content = module.exports.fixRequires(content);
 
-  // Wrap in a function
-  content = `() => {\n${content}\n}`;
-
-  console.log(content)
-
   // Wrap entire thing into a self-executing function, then pass it to `bench()`
   return bench(Function(content), [], {
     nodeArgs,

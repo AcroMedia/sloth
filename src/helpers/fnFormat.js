@@ -29,8 +29,7 @@ module.exports.getInternals = (fn, args) => {
   }) : [];
 
   if (fnString.split(/\{/)[1]) {
-    console.log(fnString.split(/^(.*?)\{(.*)/g))
-    internal = fnString.split(/^(.*?)\{(.*)/g)[3].slice(0, -1);
+    internal = fnString.split(/^(.*?)\{/gm)[2].slice(0, -1);
   } else {
     internal = `return ${fnString.split('=> ')[1]}` || null;
   }
