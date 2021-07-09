@@ -46,7 +46,7 @@ module.exports = async (func, args = [], opts = {}) => {
       requires += `const ${r.name} = global.process.mainModule.require('${r.path}');`;
     });
 
-    internals.fn = `${requires}\n${internals.fn}`;
+    formatted = `${requires}`;
   }
 
   formatted += wrap(internals.fn, internals.fnArgs);
