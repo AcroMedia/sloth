@@ -8,23 +8,29 @@ const { getInternals, wrap } = require('../helpers/fnFormat');
  * @param {Function} func
  * The function to benchmark.
  *
- * @param {Array} args
+ * @param {Array=} args
  * The arguments to supply.
  *
- * @param {Object} opts
+ * @param {Object=} opts
  * Profiler options (see Profiler class).
  *
- * @param {Function} opts.setup
+ * @param {Function=} opts.setup
  * Function that contians code that will run before the main function is run.
  *
  * Good for using require() and other things that are otherwise declared globally.
  *
- * @param {Array} opts.requirements
+ * @param {Array=} opts.requirements
  * Array of required packages. Good alternative to the setup function
+ *
+ * @param {Array=} opts.nodeArgs
+ * Array of arguments to be passed to the Node process
+ *
+ * @param {Array=} opts.cliArgs
+ * Array of args to pass to the file itself
  */
 module.exports = async (func, args = [], opts = {}) => {
-  const child = fork(`${__dirname}/../helpers/thread.js`, {
-    execArgv: ['--expose-gc']
+  const child = fork(`${__dirname}/../helpers/thread.js`, opts.cliArgs || [], {
+    execArgv: ['--expose-gc'].concat(opts.nodeArgs || [])
   });
   const profiler = new Profiler(child.pid, opts);
   let formatted = '';
