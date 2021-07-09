@@ -72,7 +72,7 @@ module.exports = class Profiler {
   end () {
     // Send 'stop' message which will give us our data.
     // Once we have the data, we can safely kill the process.
-    this.process.send('stop');
+    if (this.process) this.process.send('stop');
 
     return new Promise((resolve) => {
       const intr = setInterval(() => {
