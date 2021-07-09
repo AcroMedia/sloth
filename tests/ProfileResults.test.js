@@ -44,7 +44,7 @@ describe('ProfileResults', () => {
     const results = new ProfileResults(mockData);
 
     expect(results.averageMemoryUsage()).toBe(32651264);
-    expect(results.medianMemoryUsage()).toBe(32456704);
+    expect(results.medianMemoryUsage()).toBe(32690176);
     expect(results.modeMemoryUsage()).toBe(32690176);
 
     expect(results.memoryAtElapsed(200)).toBe(32456704);
