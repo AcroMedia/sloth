@@ -2,7 +2,7 @@ const bench = require('../src/functions/bench');
 
 describe('small data tests', () => {
   it('ensures each type of function will be run properly', async () => {
-    jest.setTimeout(10000);
+    jest.setTimeout(15000);
 
     // Regular function
     function a () { return false; }
