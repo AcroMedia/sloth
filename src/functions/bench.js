@@ -1,6 +1,4 @@
 const { fork } = require('child_process');
-const Module = require('module');
-const serial = require('serialize-javascript');
 const Profiler = require('../classes/Profiler');
 const { getInternals, wrap } = require('../helpers/fnFormat');
 
