@@ -1,4 +1,6 @@
 const { fork } = require('child_process');
+const Module = require('module');
+const serial = require('serialize-javascript');
 const Profiler = require('../classes/Profiler');
 const { getInternals, wrap } = require('../helpers/fnFormat');
 
@@ -27,14 +29,29 @@ module.exports = async (func, args = [], opts = {}) => {
     execArgv: ['--expose-gc']
   });
   const profiler = new Profiler(child.pid, opts);
+  let formatted = '';
+  let results;
 
   // Argument type errors to prevent cryptic errors when formatting/passing stuff around.
   if (typeof func !== 'function') throw new TypeError('Function argument was not a function');
   if (!Array.isArray(args)) throw new TypeError('Arguments were not provided as an array');
 
   const internals = getInternals(func, args);
-  let formatted = wrap(internals.fn, internals.fnArgs);
-  let results;
+
+  // Do we have package requirements?
+  if (opts.requirements && opts.requirements.length > 0) {
+    // We have to add the ACTUAL project path in order to get modules from it
+    // All other module paths are this dir, not the project dir
+    let requires = `global.process.mainModule.paths.push("${process.cwd()}/node_modules");`;
+
+    opts.requirements.forEach((r) => {
+      requires += `const ${r.name} = global.process.mainModule.require('${r.path}');`;
+    });
+
+    internals.fn = `${requires}\n${internals.fn}`;
+  }
+
+  formatted += wrap(internals.fn, internals.fnArgs);
 
   // Do we have a "setup" function?
   if (opts.setup && typeof opts.setup === 'function') {
@@ -43,17 +60,6 @@ module.exports = async (func, args = [], opts = {}) => {
 
     // Prepend the internal function with setup code.
     formatted = `${setupInternals};\n${formatted}`;
-  }
-
-  // Do we have package requirements
-  if (opts.requirements && opts.requirements.length > 0) {
-    let requires = '';
-
-    opts.requirements.forEach((r) => {
-      requires += `const ${r.name} = require('${r.path}');\n`;
-    });
-
-    formatted = `${requires}\n${formatted}`;
   }
 
   // Send serialized function.
