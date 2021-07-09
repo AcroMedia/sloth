@@ -4,7 +4,7 @@
   "description": "Resource profiler for node, utilizing child processes",
   "main": "index.js",
   "scripts": {
-    "test-ci": "jest -t=\"small data tests|ProfileResults\"",
+    "test-ci": "jest -t=\"small data tests|ProfileResults\" --forceExit",
     "test-min": "jest --coverage -t=\"small data tests|ProfileResults\"",
     "test-all": "jest --coverage",
     "lint": "eslint .",

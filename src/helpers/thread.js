@@ -16,6 +16,8 @@ process.on('message', async (message) => {
       await func(...args);
     } catch(e) {
       console.error(e);
+
+      process.send('error');
     }
 
     // Run JS garbage collector.

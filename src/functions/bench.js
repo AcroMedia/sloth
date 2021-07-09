@@ -61,13 +61,22 @@ module.exports = async (func, args = [], opts = {}) => {
 
   // Control of the profiler is given to the child process.
   child.on('message', async (message) => {
-    if (message === 'preloaded') {
-      // Start profiler first in order to allow the memory watcher to get baseline data.
-      await profiler.start();
-      child.send({ stage: 'start' });
-    } else if (message === 'finish') {
-      results = await profiler.end();
-      child.kill();
+    switch (message) {
+      case 'preloaded':
+        // Start profiler first in order to allow the memory watcher to get baseline data.
+        await profiler.start();
+        child.send({ stage: 'start' });
+        break;
+
+      case 'finish':
+      case 'error':
+        results = await profiler.end();
+        child.kill('SIGKILL');
+        break;
+
+      default:
+        console.log(message);
+        break;
     }
   });
 
