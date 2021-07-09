@@ -20,7 +20,7 @@ jobs:
         run: yarn lint
 
       - name: Test
-        run: yarn test-min
+        run: yarn test-ci
 
   release:
     needs: [ test ]
