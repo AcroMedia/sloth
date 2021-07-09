@@ -1,0 +1,46 @@
+name: main
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install
+        run: yarn install
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Test
+        run: yarn test-min
+
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Configure
+        run: |
+            {
+              echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN"
+            } | tee --append .npmrc
+
+      - name: Install
+        run: yarn install --frozen-lockfile
+
+      - name: Publish
+        run: yarn release
+
+      
