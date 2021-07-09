@@ -49,6 +49,9 @@
     "testRegex": "./tests/.*.js$",
     "coverageReporters": [
       "text"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/tests/__threads__"
     ]
   }
 }

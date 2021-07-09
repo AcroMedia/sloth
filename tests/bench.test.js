@@ -51,10 +51,6 @@ describe('small data tests', () => {
 
     // Function with args (not wrapped)
     expect(typeof await bench(x => x, ['1'])).toBe('object');
-
-    // Reconstructed function
-    /* eslint-disable */
-    //expect(typeof await bench(Function(String(x => x)), [1])).toBe('object')
   });
 
   it('ensures data consistency with small data', async () => {
