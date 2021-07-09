@@ -53,8 +53,8 @@ module.exports = class Profiler {
     this.process.on('message', (message) => {
       this.results = message;
 
-      // Kill the watcher process.
-      this.process.kill();
+      // Kill the watcher process (if it hasn't already).
+      if (this.process) this.process.kill();
       this.process = null;
     });
 
