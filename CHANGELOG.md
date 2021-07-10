@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/AcroMedia/sloth/compare/v1.1.0...v1.1.1) (2021-07-10)
+
+
+### Bug Fixes
+
+* semantic-release resync ([1cde867](https://github.com/AcroMedia/sloth/commit/1cde867ce4998fa324f4f88d865426c3d1566385))
+
 # [1.1.0](https://github.com/AcroMedia/sloth/compare/v1.0.0...v1.1.0) (2021-07-09)
 
 
