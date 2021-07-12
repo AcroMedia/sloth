@@ -11,16 +11,16 @@ module.exports = class Profiler {
    * @param {Object} opts
    * Profiler options.
    *
-   * @param {Boolean} opts.toFile
+   * @param {Boolean=} opts.toFile
    * Whether to spit out the output into a JSON file.
    *
-   * @param {Number} opts.timestep
+   * @param {Number=} opts.timestep
    * The amount of time in milliseconds before each memory check.
    *
-   * @param {Number} opts.waitAfterEnd
+   * @param {Number=} opts.waitAfterEnd
    * The amount of time to wait after the profiler has been stopped.
    *
-   * @param {Boolean} opts.trimNodeProcessUsage
+   * @param {Boolean=} opts.trimNodeProcessUsage
    * Trim base node process usage from tracked usage.
    */
   constructor (pid, opts = {}) {

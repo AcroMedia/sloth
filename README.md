@@ -9,6 +9,7 @@ Sloth is a Node module created with the intention of allowing easy and versatile
 - [Documentation](#documentation)
   - [Using the Profiler class](#using-the-profiler-class)
   - [Using the bench function](#using-the-bench-function)
+  - [Benchmarking a file](#benchmarking-a-file)
   - [ProfileResults](#profileresults)
 
 # Installation
@@ -40,7 +41,7 @@ const sloth = require('sloth')
 
 // OR
 
-const { Profiler, bench } = require('sloth')
+const { Profiler, bench, benchFile } = require('sloth')
 ```
 
 For more detailed descriptions and code examples, see below:
@@ -50,6 +51,7 @@ For more detailed descriptions and code examples, see below:
 ## Documentation
 - [Using the Profiler class](#using-the-profiler-class)
 - [Using the bench function](#using-the-bench-function)
+- [Benchmarking a file](#benchmarking-a-file)
 - [ProfileResults](#profileresults)
 
 ## Using the Profiler class
@@ -63,12 +65,12 @@ const profiler = new Profiler(pid, options)
 
 Options are described below, all are optional:
 
-| Option | Description |
-|--|--|
-| toFile | Boolean - Whether to export the results to a file or not |
-| timestep | Number - How long, in milliseconds, the memory monitor will check memory usage |
-| wait | Number - How long, in milliseconds, the profiler should wait before returning results |
-| trimNodeProcessUsage | Takes the memory usage of the node process before anything has happened, and removes that from the data. Should allow for yielding more accurate results in most cases |
+| Option | Type | Description |
+|--|--|--|
+| toFile | `Boolean` (optional) | Whether to export the results to a file or not |
+| timestep | `Number` (optional) | How long, in milliseconds, the memory monitor will check memory usage |
+| wait | `Number` (optional) | How long, in milliseconds, the profiler should wait before returning results |
+| trimNodeProcessUsage | `Boolean` (optional) | Takes the memory usage of the node process before anything has happened, and removes that from the data. Should allow for yielding more accurate results in most cases |
 
 Methods are described below, all are async:
 
@@ -185,10 +187,10 @@ It will return a `ProfileResults` instance (see more about `ProfileResults` [her
 
 For details on options, see [Using the Profiler class](#using-the-profiler-class), as this function uses the exact same options with one important addition:
 
-| Option | Description |
-|--|--|
-| setup | Function - Code to run in the "global" scope. Useful for `require()`s and other otherwise globally defined variables |
-| requirements | Array - A nicer alternative to `setup`. Each item should be an object with a `name` (what it's defined as) and `path` (what is actually `require`ed) |
+| Option | Type | Description |
+|--|--|--|
+| setup | `Function` (optional) | Code to run in the "global" scope. Useful for `require()`s and other otherwise globally defined variables |
+| requirements | `Array` (optional) | A nicer alternative to `setup`. Each item should be an object with a `name` (what it's defined as) and `path` (what is actually `require`ed) |
 
 ### Examples
 
@@ -289,23 +291,65 @@ When a thread is spawned, it is automatically run with the `--expose-gc` option 
 
 Obviously there are security implications when it comes to running code in a serialized-to-unserialized way, even if it's in a separate process and you have complete control of the code going in. Be careful as to how and where you use `bench()`, sometimes using the `Profiler` class will be safer.
 
+## Benchmarking a file
+
+The `benchFile()` function takes the existing `bench()` function and all it's fun function-wrappy goodness, and implements that for an entire file. It allows you to input a path as well as Node *AND* CLI options, which should allow you control over what exactly is run. This also returns an instance of `ProfileResults`.
+
+It take three arguments:
+
+| Option | Type | Description |
+|--|--|--|
+| path | `String` | The path to the file. This can be relative or absolute, although absolute is much more ideal. |
+| nodeArgs | `Array` (optional) | An array of Node options, like `--expose-gc`. These are options passed to the Node process itself |
+| cliArgs | `Array` (optional) | An array of CLI options. These are options likely found or used in your own code. |
+
+### Examples
+
+Benchmarking a single file
+
+```js
+const { benchFile } = require('sloth')
+
+await benchFile('/home/project/myFile.js')
+```
+
+Benchmarking a file and providing some Node arguments
+
+```js
+await benchFile(__dirname + '/myFile.js/', [
+  '--expose-gc',
+  '--no-warnings'
+])
+```
+
+Benchmarking a file and providing some CLI arguments
+
+```js
+await benchFile(__dirname + '/myFile.js', [], [
+  '--do-ten-times',
+  '-f',
+  '--silent',
+  '--input-dir=' + getSomeDir()
+])
+```
+
 ## ProfileResults
 
 Once `Profiler.end()` or `bench()` is called, it will return a `ProfileResults` instance. This contains all of the profiling data, as well as some extra functions that should help aid in viewing and understanding the data.
 
 The values in the `ProfileResults.data` property are outlined below:
 
-| Property | Description |
-|----------|-------------|
-| start | Number - The timestamp in milliseconds the profiling was started |
-| end | Number - The timestamp in milliseconds the profiling finished |
-| time_elapsed | Number - The amount of time profiling took, in milliseconds |
-| timestep_ms | Number - The amount of milliseconds per memory check |
-| mem_list | Array - List of memory values collected |
-| start_usage_bytes | Number - The amount of bytes being used before or as profiling began |
-| peak_usage_bytes | Number - The largest amount of memory being used at one time |
-| end_usage_bytes | Number - The amount of memory being used by the end of the profile |
-| base_process_bytes | Number - The amount of memory used by the process without anything having been done |
+| Property | Type | Description |
+|----------|-------------|--|
+| start | `Number` | The timestamp in milliseconds the profiling was started |
+| end | `Number` | The timestamp in milliseconds the profiling finished |
+| time_elapsed | `Number` | The amount of time profiling took, in milliseconds |
+| timestep_ms | `Number` | The amount of milliseconds per memory check |
+| mem_list | `Array` | List of memory values collected |
+| start_usage_bytes | `Number` | The amount of bytes being used before or as profiling began |
+| peak_usage_bytes | `Number` | The largest amount of memory being used at one time |
+| end_usage_bytes | `Number` | The amount of memory being used by the end of the profile |
+| base_process_bytes | `Number` | The amount of memory used by the process without anything having been done |
 
 There are a few methods provided that should help make sense of some of the data:
 
