@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/AcroMedia/sloth/compare/v1.1.2...v1.1.3) (2021-07-12)
+
+
+### Bug Fixes
+
+* default trimNodeProcessUsage to true ([efcb4ee](https://github.com/AcroMedia/sloth/commit/efcb4eebb5fd85e84f8f814929c13f1dc9d0d0da))
+
 ## [1.1.2](https://github.com/AcroMedia/sloth/compare/v1.1.1...v1.1.2) (2021-07-12)
 
 
