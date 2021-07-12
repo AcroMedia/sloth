@@ -1,15 +1,15 @@
-let func,
-  args;
+let func: Function,
+  args: Array<any>;
 
 /* eslint-disable */
-process.on('message', async (message) => {
+process.on('message', async (message: { stage: string, func: string, args: Array<string> }) => {
   if (message.stage === 'preload') {
     // Convert serialized function to actual.
     if (message.func) func = Function(message.func);
     if (message.args) args = message.args;
     else args = [];
 
-    process.send('preloaded');
+    if (process.send) process.send('preloaded');
   } else if (message.stage === 'start') {
     // Run with await in case of async.
     try {
@@ -17,12 +17,12 @@ process.on('message', async (message) => {
     } catch(e) {
       console.error(e);
 
-      process.send('error');
+      if (process.send) process.send('error');
     }
 
     // Run JS garbage collector.
-    global.gc();
+    if (global.gc) global.gc();
 
-    process.send('finish');
+    if (process.send) process.send('finish');
   }
 });

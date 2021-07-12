@@ -5,7 +5,8 @@
     "checkJs": true,
     "target": "es2018",
     "esModuleInterop": true,
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "strict": true
   },
   "include": [
     "./src",

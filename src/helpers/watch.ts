@@ -8,7 +8,17 @@ const writeToFile = process.argv[5] === 'true';
 const trim = process.argv[6] === 'true';
 
 // Base memory object.
-const memObj = {
+const memObj: {
+  start: number,
+  end: number,
+  time_elapsed: number,
+  timestep_ms: number,
+  mem_list: Array<any>,
+  start_usage_bytes: number,
+  peak_usage_bytes: number,
+  end_usage_bytes: number,
+  base_process_bytes: number
+} = {
   start: Date.now(),
   end: 0,
   time_elapsed: 0,
@@ -22,7 +32,7 @@ const memObj = {
 
 // Check cycle
 setInterval(async () => {
-  const data = await pidusage(pid).catch((e) => {
+  const data = await pidusage(pid).catch((e: Error) => {
     console.error(e);
     emergencyStop();
   });
@@ -51,7 +61,7 @@ process.on('message', (message) => {
       memObj.time_elapsed = memObj.end - memObj.start;
 
       // Use callbacks since exit handler doesn't like async.
-      pidusage(pid, (err, data) => {
+      pidusage(pid, (err: Error, data: { memory: number }) => {
         if (err) console.error(err);
 
         // Set end usage bytes
@@ -60,11 +70,11 @@ process.on('message', (message) => {
         // TODO: Send back data OR write to file.
         if (writeToFile) {
           fs.writeFile('./memstats.json', JSON.stringify(memObj), 'utf8', () => {
-            process.send(memObj);
+            if (process.send) process.send(memObj);
           });
         }
 
-        process.send(memObj);
+        if (process.send) process.send(memObj);
       });
     }, wait);
   }
