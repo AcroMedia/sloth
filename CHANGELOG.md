@@ -1,3 +1,11 @@
+## [1.1.2](https://github.com/AcroMedia/sloth/compare/v1.1.1...v1.1.2) (2021-07-12)
+
+
+### Bug Fixes
+
+* define require instead of replacing, misc. fixes ([59f867e](https://github.com/AcroMedia/sloth/commit/59f867ef2ffea6561277a085ff2810cdc1d3e6e8))
+* improve documentation ([115b12c](https://github.com/AcroMedia/sloth/commit/115b12c02b523cb47fdd017aa89b4fbd805f9d94))
+
 ## [1.1.1](https://github.com/AcroMedia/sloth/compare/v1.1.0...v1.1.1) (2021-07-10)
 
 
