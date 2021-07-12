@@ -34,7 +34,7 @@ module.exports = class Profiler {
     this.toFile = opts.toFile || false;
     this.timestep = opts.timestep || 100;
     this.wait = opts.waitAfterEnd || 0;
-    this.trimNodeProcessUsage = opts.trimNodeProcessUsage || false;
+    this.trimNodeProcessUsage = opts.trimNodeProcessUsage || true;
   }
 
   /**
