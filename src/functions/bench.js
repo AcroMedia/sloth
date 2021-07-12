@@ -33,7 +33,8 @@ module.exports = async (func, args = [], opts = {}) => {
     execArgv: ['--expose-gc'].concat(opts.nodeArgs || [])
   });
   const profiler = new Profiler(child.pid, opts);
-  let formatted = '';
+  // We have to redefine require() since the forked process doesn't do it for us :(
+  let formatted = 'const require = global.process.mainModule.require;';
   let results;
 
   // Argument type errors to prevent cryptic errors when formatting/passing stuff around.
@@ -49,10 +50,10 @@ module.exports = async (func, args = [], opts = {}) => {
     let requires = `global.process.mainModule.paths.push("${process.cwd()}/node_modules");`;
 
     opts.requirements.forEach((r) => {
-      requires += `const ${r.name} = global.process.mainModule.require('${r.path}');`;
+      requires += `const ${r.name} = require('${r.path}');`;
     });
 
-    formatted = `${requires}`;
+    formatted += `${requires}`;
   }
 
   formatted += wrap(internals.fn, internals.fnArgs);

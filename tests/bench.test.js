@@ -76,20 +76,20 @@ describe('small data tests', () => {
   });
 
   it('tests setup function', async () => {
-    await bench(() => {}, [], {
+    expect(async () => bench(() => {}, [], {
       setup: () => {
         console.log('setup test');
       }
-    });
+    })).not.toThrow();
   });
 
   it('tests requirements array', async () => {
-    await bench(() => {}, [], {
+    expect(async () => bench(() => {}, [], {
       requirements: [{
         name: 'fs',
         path: 'fs'
       }]
-    });
+    })).not.toThrow();
   });
 
   it('tests errors', async () => {

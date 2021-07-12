@@ -22,7 +22,10 @@ const memObj = {
 
 // Check cycle
 setInterval(async () => {
-  const data = await pidusage(pid).catch(e => emergencyStop());
+  const data = await pidusage(pid).catch((e) => {
+    console.error(e);
+    emergencyStop();
+  });
 
   // First check?
   if (memObj.mem_list.length === 0) {
@@ -68,5 +71,8 @@ process.on('message', (message) => {
 });
 
 function emergencyStop () {
-  process.send(memObj);
+  if (process.channel) process.send(memObj);
+
+  // Make sure we don't leave the process hanging, in case we got disconnected
+  process.kill(process.pid);
 }

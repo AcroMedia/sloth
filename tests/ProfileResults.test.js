@@ -44,6 +44,7 @@ describe('ProfileResults', () => {
     const results = new ProfileResults(mockData);
 
     expect(results.averageMemoryUsage()).toBe(32651264);
+    // This assertion literally breaks on Node 10. Why? I wish I knew.
     expect(results.medianMemoryUsage()).toBe(32690176);
     expect(results.modeMemoryUsage()).toBe(32690176);
 

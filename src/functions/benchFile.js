@@ -23,20 +23,9 @@ module.exports = async (path, nodeArgs = [], cliArgs = []) => {
 
   let content = fs.readFileSync(fullPath).toString()
 
-  // Find instances of require(), fix them using our funky global way
-  content = module.exports.fixRequires(content);
-
   // Wrap entire thing into a JS function, then pass it to `bench()`
   return bench(Function(content), [], {
     nodeArgs,
     cliArgs
   });
 };
-
-/**
- * Fix requires by replacing regular require() statements with
- * `global.process.mainModule.require`
- *
- * @param {String} code
- */
-module.exports.fixRequires = code => code.replace(/( )?require( .*)?\(/, 'global.process.mainModule.require(');
