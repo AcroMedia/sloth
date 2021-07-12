@@ -1,3 +1,5 @@
+import ProfileResults from "../classes/ProfileResults";
+
 const { fork } = require('child_process');
 const Profiler = require('../classes/Profiler');
 const { getInternals, wrap } = require('../helpers/fnFormat');
@@ -28,14 +30,14 @@ const { getInternals, wrap } = require('../helpers/fnFormat');
  * @param {Array=} opts.cliArgs
  * Array of args to pass to the file itself
  */
-export default async (func, args = [], opts = {}) => {
+export default async (func: Function, args: Array<any> = [], opts: any = {}) => {
   const child = fork(`${__dirname}/../helpers/thread.js`, opts.cliArgs || [], {
     execArgv: ['--expose-gc'].concat(opts.nodeArgs || [])
   });
   const profiler = new Profiler(child.pid, opts);
   // We have to redefine require() since the forked process doesn't do it for us :(
   let formatted = 'const require = global.process.mainModule.require;';
-  let results;
+  let results: ProfileResults;
 
   // Argument type errors to prevent cryptic errors when formatting/passing stuff around.
   if (typeof func !== 'function') throw new TypeError('Function argument was not a function');
@@ -49,7 +51,7 @@ export default async (func, args = [], opts = {}) => {
     // All other module paths are this dir, not the project dir
     let requires = `global.process.mainModule.paths.push("${process.cwd()}/node_modules");`;
 
-    opts.requirements.forEach((r) => {
+    opts.requirements.forEach((r: { name: string, path: string }) => {
       requires += `const ${r.name} = require('${r.path}');`;
     });
 
@@ -71,7 +73,7 @@ export default async (func, args = [], opts = {}) => {
   child.send({ stage: 'preload', func: formatted, args });
 
   // Control of the profiler is given to the child process.
-  child.on('message', async (message) => {
+  child.on('message', async (message: string) => {
     switch (message) {
       case 'preloaded':
         // Start profiler first in order to allow the memory watcher to get baseline data.
