@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/AcroMedia/sloth/compare/v1.1.3...v1.1.4) (2021-07-12)
+
+
+### Bug Fixes
+
+* Save snapshot when calling compare function ([d4a76b5](https://github.com/AcroMedia/sloth/commit/d4a76b5587d0423b2892dbcc7e1228c9d06d4cc8))
+
 ## [1.1.3](https://github.com/AcroMedia/sloth/compare/v1.1.2...v1.1.3) (2021-07-12)
 
 
