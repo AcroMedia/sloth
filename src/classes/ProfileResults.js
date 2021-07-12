@@ -114,8 +114,6 @@ module.exports = class ProfileResults {
     // Mostly just for user reference, not checked in code at all
     this.data.last_updated = new Date().toLocaleString();
 
-    console.log(`${path + filename}.json`);
-
     return fs.writeFileSync(`${path + filename}.json`, JSON.stringify(this.data), 'utf8');
   }
 
