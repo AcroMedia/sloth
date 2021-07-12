@@ -8,7 +8,7 @@
     "test-min": "jest --coverage -t=\"small data tests|ProfileResults\"",
     "test-all": "jest --coverage",
     "lint": "eslint .",
-    "build": "./node_modules/typescript/bin/tsc --declarations",
+    "build": "./node_modules/typescript/bin/tsc --declaration",
     "release": "semantic-release"
   },
   "repository": {
