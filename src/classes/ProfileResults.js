@@ -114,6 +114,8 @@ module.exports = class ProfileResults {
     // Mostly just for user reference, not checked in code at all
     this.data.last_updated = new Date().toLocaleString();
 
+    console.log(`${path + filename}.json`);
+
     return fs.writeFileSync(`${path + filename}.json`, JSON.stringify(this.data), 'utf8');
   }
 
@@ -132,7 +134,18 @@ module.exports = class ProfileResults {
     try {
       obj = JSON.parse(fs.readFileSync(path));
     } catch (e) {
-      throw e;
+      // Create a new snapshot an compare to that ()
+      const filename = path.split('/')[path.split('/').length - 1].split('.')[0];
+      const folderPath = path.split(`${filename}.json`)[0];
+
+      this.saveSnapshot(filename, folderPath);
+
+      return {
+        time_elapsed: 0,
+        start_usage_bytes: 0,
+        peak_usage_bytes: 0,
+        end_usage_bytes: 0
+      };
     }
 
     const comparison = {
