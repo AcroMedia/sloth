@@ -28,7 +28,7 @@ const { getInternals, wrap } = require('../helpers/fnFormat');
  * @param {Array=} opts.cliArgs
  * Array of args to pass to the file itself
  */
-module.exports = async (func, args = [], opts = {}) => {
+export default async (func, args = [], opts = {}) => {
   const child = fork(`${__dirname}/../helpers/thread.js`, opts.cliArgs || [], {
     execArgv: ['--expose-gc'].concat(opts.nodeArgs || [])
   });

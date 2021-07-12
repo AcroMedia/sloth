@@ -1,7 +1,7 @@
-const cp = require('child_process');
-const ProfileResults = require('./ProfileResults');
+import cp from 'child_process';
+import ProfileResults from './ProfileResults';
 
-module.exports = class Profiler {
+export default class Profiler {
   /**
    * Class for profiling a process, provided a PID.
    *

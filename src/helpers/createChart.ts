@@ -1,6 +1,6 @@
-const fs = require('fs');
-const { JSDOM } = require('jsdom');
-const d3 = require('d3');
+import fs from 'fs';
+import { JSDOM } from 'jsdom';
+import d3 from 'd3';
 
 /**
  * Output memory usage data to SVG line graph

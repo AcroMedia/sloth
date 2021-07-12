@@ -4,7 +4,7 @@ const _path = require('path');
 const asciichart = require('asciichart');
 const createChart = require('../helpers/createChart');
 
-module.exports = class ProfileResults {
+export default class ProfileResults {
   /**
    * Wraps the results of the Profiler into a class.
    *

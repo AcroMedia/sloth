@@ -2,8 +2,8 @@ const fs = require('fs');
 const pidusage = require('pidusage');
 
 const pid = process.argv[2];
-const timestep = process.argv[3] || 100;
-const wait = process.argv[4] || 0;
+const timestep = Number(process.argv[3]) || 100;
+const wait = Number(process.argv[4]) || 0;
 const writeToFile = process.argv[5] === 'true';
 const trim = process.argv[6] === 'true';
 
@@ -71,7 +71,7 @@ process.on('message', (message) => {
 });
 
 function emergencyStop () {
-  if (process.channel) process.send(memObj);
+  if (process.send) process.send(memObj);
 
   // Make sure we don't leave the process hanging, in case we got disconnected
   process.kill(process.pid);
