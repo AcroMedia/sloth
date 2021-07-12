@@ -1,6 +1,6 @@
-const Profiler = require('./src/classes/Profiler');
-const bench = require('./src/functions/bench');
-const benchFile = require('./src/functions/benchFile');
+const Profiler = require('./dist/classes/Profiler');
+const bench = require('./dist/functions/bench');
+const benchFile = require('./dist/functions/benchFile');
 
 module.exports = {
   Profiler,
