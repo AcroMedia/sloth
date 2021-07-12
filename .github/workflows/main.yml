@@ -17,6 +17,9 @@ jobs:
       - name: Install
         run: yarn install
 
+      - name: Build
+        run: yarn build
+
       - name: Lint
         run: yarn lint
 
@@ -49,6 +52,9 @@ jobs:
 
       - name: Install
         run: yarn install --frozen-lockfile
+
+      - name: Build
+        run: yarn build
 
       - name: Publish
         run: yarn release
