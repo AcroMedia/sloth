@@ -1,5 +1,6 @@
 import cp from 'child_process';
 import ProfileResults from './ProfileResults';
+import pidusage from 'pidusage'
 
 export default class Profiler {
   public toWatch: number;
@@ -48,8 +49,8 @@ export default class Profiler {
   /**
    * Starts the watching process by spawning a fork of the monitoring file.
    */
-  start () {
-    this.process = cp.fork(`${__dirname}/../helpers/watch.js`, [
+  async start (): Promise<Profiler> {
+    this.process = cp.fork(`${__dirname}/../../dist/helpers/watch.js`, [
       this.toWatch,
       this.timestep,
       this.wait,
@@ -77,7 +78,7 @@ export default class Profiler {
   /**
    * Kills the monitoring fork process, returns data.
    */
-  end () {
+  end(): Promise<ProfileResults> {
     // Send 'stop' message which will give us our data.
     // Once we have the data, we can safely kill the process.
     if (this.process) this.process.send('stop');

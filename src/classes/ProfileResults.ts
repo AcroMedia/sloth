@@ -5,7 +5,7 @@ const asciichart = require('asciichart');
 const createChart = require('../helpers/createChart');
 
 export default class ProfileResults {
-  private data: {
+  public data: {
     start: number,
     end: number,
     time_elapsed: number,
@@ -34,7 +34,7 @@ export default class ProfileResults {
   /**
    * Get average memory usage.
    */
-  averageMemoryUsage () {
+  public averageMemoryUsage () {
     let total: number = 0;
     this.data.mem_list.forEach((m: number) => {
       total += m;
@@ -46,14 +46,14 @@ export default class ProfileResults {
   /**
    * Get median memory usage.
    */
-  medianMemoryUsage () {
+  public medianMemoryUsage () {
     return this.data.mem_list.sort((a, b) => a - b)[Math.round(this.data.mem_list.length / 2)];
   }
 
   /**
    * Get most frequently occuring value in memory usage.
    */
-  modeMemoryUsage () {
+  public modeMemoryUsage () {
     const freqMap: any = {};
     let maxCount = 0;
     let largest = null;
@@ -76,7 +76,7 @@ export default class ProfileResults {
    *
    * @param {Number} ms
    */
-  memoryAtElapsed (ms: number) {
+  public memoryAtElapsed (ms: number) {
     if (ms > this.data.time_elapsed) throw new Error('Time provided was greater than total profile time.');
 
     return this.data.mem_list[Math.round(ms / this.data.timestep_ms)];
@@ -85,7 +85,7 @@ export default class ProfileResults {
   /**
    * Save data as a snapshot for comparison in future tests.
    */
-  saveSnapshot (filename: string, path = `${_path.resolve('.')}/__snapshots__/`) {
+  public saveSnapshot (filename: string, path = `${_path.resolve('.')}/__snapshots__/`) {
     if (!filename) throw Error('You must provide a file name.');
 
     if (!fs.existsSync(path)) {
@@ -107,7 +107,7 @@ export default class ProfileResults {
    * @param {String=} options.graph
    * @param {String=} options.graph_path
    */
-  compareToSnapshot (path: string, options: {
+  public compareToSnapshot (path: string, options: {
     logResultsDiff?: boolean,
     graph?: string,
     graph_path?: string

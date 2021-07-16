@@ -30,8 +30,8 @@ const { getInternals, wrap } = require('../helpers/fnFormat');
  * @param {Array=} opts.cliArgs
  * Array of args to pass to the file itself
  */
-export default async (func: Function, args: Array<any> = [], opts: any = {}) => {
-  const child = fork(`${__dirname}/../helpers/thread.js`, opts.cliArgs || [], {
+export default async (func: Function, args: Array<any> = [], opts: any = {}): Promise<ProfileResults> => {
+  const child = fork(`${__dirname}/../../dist/helpers/watch.js`, opts.cliArgs || [], {
     execArgv: ['--expose-gc'].concat(opts.nodeArgs || [])
   });
   const profiler = new Profiler(child.pid, opts);

@@ -13,7 +13,7 @@ const bench = require('./bench');
  * @param {Array=} nodeOpts
  * @param {Array=} cliOpts
  */
-export default async (path: string, nodeArgs = [], cliArgs = []) => {
+export default async (path: string, nodeArgs: Array<string> = [], cliArgs: Array<string> = []) => {
   let fullPath = path;
 
   // If our path isn't absolute, we will make it absolute using the CWD

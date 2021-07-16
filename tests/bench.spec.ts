@@ -1,3 +1,4 @@
+import ProfileResults from '../src/classes/ProfileResults';
 import bench from '../src/functions/bench';
 
 describe('small data tests', () => {
@@ -47,10 +48,10 @@ describe('small data tests', () => {
     expect(typeof await bench(async () => false)).toBe('object');
 
     // Function with args (wrapped)
-    expect(typeof await bench((x, y) => x + y, [1, 1])).toBe('object');
+    expect(typeof await bench((x: any, y: any) => x + y, [1, 1])).toBe('object');
 
     // Function with args (not wrapped)
-    expect(typeof await bench(x => x, ['1'])).toBe('object');
+    expect(typeof await bench((x: any) => x, ['1'])).toBe('object');
   });
 
   it('ensures data consistency with small data', async () => {
@@ -61,7 +62,7 @@ describe('small data tests', () => {
       myBigArray.reverse();
     }
 
-    const results = await bench(a, [], {
+    const results: ProfileResults = await bench(a, [], {
       timestep: 100,
       toFile: false,
       waitAfterEnd: 1000,
@@ -95,11 +96,13 @@ describe('small data tests', () => {
   it('tests errors', async () => {
     // Not providing a proper function
     expect(async () => {
+      // @ts-expect-error: Purposely passing the wrong type for error checking
       await bench('');
     }).rejects.toThrow();
 
     // Not providing arguments as array
     expect(async () => {
+      // @ts-expect-error: Purposely passing the wrong type for error checking
       await bench(() => {}, '');
     }).rejects.toThrow();
   });
@@ -114,7 +117,7 @@ describe('large data tests', () => {
       myBigArray.reverse();
     }
 
-    const results = await bench(a, [], {
+    const results: ProfileResults = await bench(a, [], {
       timestep: 100,
       toFile: false,
       waitAfterEnd: 1000,

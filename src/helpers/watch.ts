@@ -1,5 +1,7 @@
-const fs = require('fs');
-const pidusage = require('pidusage');
+import fs from 'fs';
+import pidusage from 'pidusage';
+// @ts-expect-error
+import { Status } from '@types/pidusage';
 
 const pid = process.argv[2];
 const timestep = Number(process.argv[3]) || 100;
@@ -32,7 +34,9 @@ const memObj: {
 
 // Check cycle
 setInterval(async () => {
-  const data = await pidusage(pid).catch((e: Error) => {
+  console.log(pid);
+  // @ts-expect-error
+  const data: Status = await pidusage(pid).catch((e: Error) => {
     console.error(e);
     emergencyStop();
   });

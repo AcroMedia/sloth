@@ -65,7 +65,7 @@ describe('ProfileResults', () => {
     expect(savedData.path).toBe('/home/snapshots/name.json');
 
     // Data should essentially be duplicated
-    Object.keys(mockData).forEach((key) => {
+    Object.keys(mockData).forEach((key: string) => {
       expect(parsed[key]).toStrictEqual(mockData[key]);
     });
   });
@@ -81,7 +81,7 @@ describe('ProfileResults', () => {
 
     // Test comparison by skewing the results a bit
     const skewData = {};
-    Object.keys(mockData).forEach((key) => {
+    Object.keys(mockData).forEach((key: string) => {
       if (typeof mockData[key] === 'number') {
         skewData[key] = mockData[key] + 10;
       }
@@ -98,16 +98,16 @@ describe('ProfileResults', () => {
   it('tests diff logging', () => {
     const results = new ProfileResults(mockData);
 
-    console.log = jest.fn();
+    const log = jest.spyOn(console, 'log').mockImplementation(jest.fn());
 
     results.compareToSnapshot('', {
       logResultsDiff: true
     });
 
-    expect(console.log.mock.calls[0][0]).toBe('Time elapsed: 0ms');
-    expect(console.log.mock.calls[1][0]).toBe('Start usage bytes: -0 Bytes');
-    expect(console.log.mock.calls[2][0]).toBe('Peak usage bytes: -0 Bytes');
-    expect(console.log.mock.calls[3][0]).toBe('End usage bytes: -0 Bytes');
+    expect(log.mock.calls[0][0]).toBe('Time elapsed: 0ms');
+    expect(log.mock.calls[1][0]).toBe('Start usage bytes: -0 Bytes');
+    expect(log.mock.calls[2][0]).toBe('Peak usage bytes: -0 Bytes');
+    expect(log.mock.calls[3][0]).toBe('End usage bytes: -0 Bytes');
   });
 
   it('tests diffferent graph calls', () => {
