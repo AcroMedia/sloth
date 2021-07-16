@@ -4,7 +4,6 @@ const _path = require('path');
 const asciichart = require('asciichart');
 const createChart = require('../helpers/createChart');
 
-
 export default class ProfileResults {
   private data: {
     start: number,

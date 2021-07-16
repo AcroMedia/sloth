@@ -2,13 +2,13 @@ import cp from 'child_process';
 import ProfileResults from './ProfileResults';
 
 export default class Profiler {
-  private toWatch: number;
-  private results: any;
-  private process: any;
-  private toFile: boolean;
-  private timestep: number;
-  private wait: number;
-  private trimNodeProcessUsage: boolean;
+  public toWatch: number;
+  public results: any;
+  public process: any;
+  public toFile: boolean;
+  public timestep: number;
+  public wait: number;
+  public trimNodeProcessUsage: boolean;
 
   /**
    * Class for profiling a process, provided a PID.

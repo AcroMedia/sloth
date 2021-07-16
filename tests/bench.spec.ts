@@ -1,4 +1,4 @@
-const bench = require('../dist/functions/bench');
+import bench from '../src/functions/bench';
 
 describe('small data tests', () => {
   it('ensures each type of function will be run properly', async () => {

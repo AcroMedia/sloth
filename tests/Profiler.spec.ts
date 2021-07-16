@@ -1,4 +1,4 @@
-const Profiler = require('../dist/classes/Profiler');
+import Profiler from '../src/classes/Profiler';
 
 describe('small data tests', () => {
   it('ensures constructor works without options', () => {

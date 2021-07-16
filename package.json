@@ -55,7 +55,8 @@
     "typescript": "^4.3.5"
   },
   "jest": {
-    "testRegex": "./tests/.*.js$",
+    "preset": "ts-jest",
+    "testRegex": "./tests/.*.ts$",
     "coverageReporters": [
       "text"
     ],
