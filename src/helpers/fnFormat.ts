@@ -3,7 +3,7 @@ const serial = require('serialize-javascript');
 /**
  * Convert a function to it's serialized internals
  */
-module.exports.getInternals = (fn: Function, args: Array<any>) => {
+export function getInternals (fn: Function, args?: Array<any>): { fn: string, fnArgs: Array<any> } {
   const fnString = String(fn);
   let fnArgs: Array<String>;
 
@@ -14,7 +14,7 @@ module.exports.getInternals = (fn: Function, args: Array<any>) => {
     fnArgs = fnString.split('(')[1].split(')')[0].split(',');
   }
 
-  let internal;
+  let internal = '';
 
   fnArgs = args && args.length > 0 ? fnArgs.map((a) => {
     // Make sure all args are serialized
@@ -28,7 +28,7 @@ module.exports.getInternals = (fn: Function, args: Array<any>) => {
   if (fnString.split(/\{/)[1]) {
     internal = fnString.split(/^(.*?)\{/gm)[2].slice(0, -1);
   } else {
-    internal = `return ${fnString.split('=> ')[1]}` || null;
+    internal = `return ${fnString.split('=> ')[1]}` || '';
   }
 
   return { fn: internal, fnArgs };
@@ -37,4 +37,6 @@ module.exports.getInternals = (fn: Function, args: Array<any>) => {
 /**
  * Creates a function that will automatically call itself when used in the JS Function() constructor
  */
-module.exports.wrap = (str: string, args: Array<String>) => `(async (${args.join(',')}) => { ${str} })()`;
+export function wrap(str: string, args: Array<String>): string {
+  return `(async (${args.join(',')}) => { ${str} })()`;
+};

@@ -1,6 +1,6 @@
 import colors from 'colors';
 
-const mockData = {
+const mockData: {[key: string]: any} = {
   start: Date.now(),
   end: Date.now() + 1200,
   time_elapsed: 1200,
@@ -33,9 +33,9 @@ jest.mock('fs', () => ({
 }));
 
 jest.mock('../src/helpers/createChart', () => jest.fn());
-const createChart = require('../dist/helpers/createChart');
+import createChart from'../src/helpers/createChart';
 
-const ProfileResults = require('../dist/classes/ProfileResults');
+import ProfileResults from '../src/classes/ProfileResults';
 
 colors.disable();
 
@@ -57,9 +57,11 @@ describe('ProfileResults', () => {
   it('tests snapshotting', () => {
     const results = new ProfileResults(mockData);
 
+    // @ts-expect-error
     expect(() => results.saveSnapshot()).toThrow();
 
-    const savedData = results.saveSnapshot('name', '/home/snapshots/');
+    // @ts-expect-error
+    const savedData: { data: any, path: string } = results.saveSnapshot('name', '/home/snapshots/');
     const parsed = JSON.parse(savedData.data);
 
     expect(savedData.path).toBe('/home/snapshots/name.json');
@@ -80,7 +82,7 @@ describe('ProfileResults', () => {
     expect(comparison.end_usage_bytes).toBe(0);
 
     // Test comparison by skewing the results a bit
-    const skewData = {};
+    const skewData: {[key: string]: any} = {};
     Object.keys(mockData).forEach((key: string) => {
       if (typeof mockData[key] === 'number') {
         skewData[key] = mockData[key] + 10;

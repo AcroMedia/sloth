@@ -1,6 +1,5 @@
 import cp from 'child_process';
 import ProfileResults from './ProfileResults';
-import pidusage from 'pidusage'
 
 export default class Profiler {
   public toWatch: number;

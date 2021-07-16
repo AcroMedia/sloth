@@ -1,8 +1,9 @@
 import { red, green } from 'colors';
 import fs from 'fs';
-const _path = require('path');
-const asciichart = require('asciichart');
-const createChart = require('../helpers/createChart');
+import _path from 'path';
+//@ts-expect-error
+import asciichart from 'asciichart';
+import createChart from '../helpers/createChart';
 
 export default class ProfileResults {
   public data: {
@@ -85,7 +86,7 @@ export default class ProfileResults {
   /**
    * Save data as a snapshot for comparison in future tests.
    */
-  public saveSnapshot (filename: string, path = `${_path.resolve('.')}/__snapshots__/`) {
+  public saveSnapshot (filename: string, path = `${_path.resolve('.')}/__snapshots__/`): void|object {
     if (!filename) throw Error('You must provide a file name.');
 
     if (!fs.existsSync(path)) {

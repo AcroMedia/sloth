@@ -1,8 +1,8 @@
 import ProfileResults from "../classes/ProfileResults";
 
-const { fork } = require('child_process');
-const Profiler = require('../classes/Profiler');
-const { getInternals, wrap } = require('../helpers/fnFormat');
+import { fork } from 'child_process';
+import Profiler from '../classes/Profiler';
+import { getInternals, wrap } from '../helpers/fnFormat';
 
 /**
  * Benchmarks a function in an isolated process.
@@ -34,6 +34,9 @@ export default async (func: Function, args: Array<any> = [], opts: any = {}): Pr
   const child = fork(`${__dirname}/../../dist/helpers/watch.js`, opts.cliArgs || [], {
     execArgv: ['--expose-gc'].concat(opts.nodeArgs || [])
   });
+
+  if (!child.pid) throw Error('Child process was not assigned a PID');
+
   const profiler = new Profiler(child.pid, opts);
   // We have to redefine require() since the forked process doesn't do it for us :(
   let formatted = 'const require = global.process.mainModule.require;';
