@@ -1,10 +1,10 @@
 import ProfileResults from '../src/classes/ProfileResults';
 import bench from '../src/functions/bench';
 
+jest.setTimeout(20000);
+
 describe('small data tests', () => {
   it('ensures each type of function will be run properly', async () => {
-    jest.setTimeout(15000);
-
     // Regular function
     function a () { return false; }
     expect(typeof await bench(a)).toBe('object');

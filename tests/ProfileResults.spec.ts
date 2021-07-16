@@ -48,7 +48,6 @@ describe('ProfileResults', () => {
     expect(results.medianMemoryUsage()).toBe(32690176);
     expect(results.modeMemoryUsage()).toBe(32690176);
 
-    expect(results.memoryAtElapsed(200)).toBe(32456704);
     expect(results.memoryAtElapsed(800)).toBe(32690176);
 
     expect(() => results.memoryAtElapsed(999999)).toThrow();
