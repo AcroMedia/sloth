@@ -11,6 +11,8 @@ Sloth is a Node module created with the intention of allowing easy and versatile
   - [Using the bench function](#using-the-bench-function)
   - [Benchmarking a file](#benchmarking-a-file)
   - [ProfileResults](#profileresults)
+- [Automated Testing Notes](#automated-testing-notes)
+  - [Jest](#jest)
 
 # Installation
 
@@ -362,5 +364,12 @@ There are a few methods provided that should help make sense of some of the data
 
 ### Extra Notes
 
-If you intend on using this module in automated testing, keep in mind that profiling may take different amounts of time on different machines. This could possibly skew averages and such, so stick to testing on more concrete values like `peak_usage_bytes`.
+If you intend on using this module in any automated testing, keep in mind that profiling may take different amounts of time on different machines. This could possibly skew averages and such, so stick to testing on more concrete values like `peak_usage_bytes`.
 
+## Automated Testing Notes
+
+### Jest
+
+Jest coverage, handled by Istanbul, causes any code that is imported to be processed through a coverage watcher, which breaks the `bench` function when trying to bench a function from an outside module.
+
+To fix `bench` breaking due to the coverage serialization, you will have to disable code coverage for your benchmarking tests. That, or use the `Profiler`.
