@@ -33,9 +33,9 @@ jest.mock('fs', () => ({
 }));
 
 jest.mock('../src/helpers/createChart', () => jest.fn());
-const createChart = require('../src/helpers/createChart');
+const createChart = require('../dist/helpers/createChart');
 
-const ProfileResults = require('../src/classes/ProfileResults');
+const ProfileResults = require('../dist/classes/ProfileResults');
 
 colors.disable();
 

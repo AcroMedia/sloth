@@ -1,5 +1,5 @@
-const { red, green } = require('colors');
-const fs = require('fs');
+import { red, green } from 'colors';
+import fs from 'fs';
 const _path = require('path');
 const asciichart = require('asciichart');
 const createChart = require('../helpers/createChart');
@@ -116,7 +116,7 @@ export default class ProfileResults {
     let obj;
 
     try {
-      obj = JSON.parse(fs.readFileSync(path));
+      obj = JSON.parse(fs.readFileSync(path).toString());
     } catch (e) {
       // Create a new snapshot an compare to that ()
       const filename = path.split('/')[path.split('/').length - 1].split('.')[0];

@@ -1,8 +1,8 @@
-const Profiler = require('./dist/classes/Profiler');
-const bench = require('./dist/functions/bench');
-const benchFile = require('./dist/functions/benchFile');
+import Profiler from './dist/classes/Profiler';
+import bench from './dist/functions/bench';
+import benchFile from './dist/functions/benchFile';
 
-module.exports = {
+export default {
   Profiler,
   bench,
   benchFile
