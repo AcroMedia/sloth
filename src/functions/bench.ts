@@ -31,7 +31,7 @@ import { getInternals, wrap } from '../helpers/fnFormat';
  * Array of args to pass to the file itself
  */
 export default async (func: Function, args: Array<any> = [], opts: any = {}): Promise<ProfileResults> => {
-  const child = fork(`${__dirname}/../../dist/helpers/watch.js`, opts.cliArgs || [], {
+  const child = fork(`${__dirname}/../../dist/helpers/thread.js`, opts.cliArgs || [], {
     execArgv: ['--expose-gc'].concat(opts.nodeArgs || [])
   });
 
@@ -91,7 +91,7 @@ export default async (func: Function, args: Array<any> = [], opts: any = {}): Pr
         break;
 
       default:
-        console.log(message);
+        //console.log(message);
         break;
     }
   });

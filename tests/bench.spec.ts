@@ -77,7 +77,7 @@ describe('small data tests', () => {
   });
 
   it('tests setup function', async () => {
-    expect(async () => bench(() => {}, [], {
+    expect(async () => await bench(() => {}, [], {
       setup: () => {
         console.log('setup test');
       }
@@ -85,7 +85,7 @@ describe('small data tests', () => {
   });
 
   it('tests requirements array', async () => {
-    expect(async () => bench(() => {}, [], {
+    expect(async () => await bench(() => {}, [], {
       requirements: [{
         name: 'fs',
         path: 'fs'
