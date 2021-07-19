@@ -12,7 +12,6 @@
       "no-console": "off",
       "no-await-in-loop": "off",
       "no-underscore-dangle": "off"
-    },
-    "ignorePatterns": "dist/**/*.js"
+    }
   }
   
