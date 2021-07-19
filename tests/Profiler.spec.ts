@@ -48,6 +48,8 @@ describe('small data tests', () => {
   });
 });
 
+jest.setTimeout(20000);
+
 describe('large data tests', () => {
   it('ensures data consistancy with big data', async () => {
     const prof = new Profiler(process.pid, {
