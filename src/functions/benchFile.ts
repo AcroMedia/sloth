@@ -1,3 +1,5 @@
+import ProfileResults from "../classes/ProfileResults";
+
 const fs = require('fs');
 const bench = require('./bench');
 
@@ -13,7 +15,7 @@ const bench = require('./bench');
  * @param {Array=} nodeOpts
  * @param {Array=} cliOpts
  */
-export default async (path: string, nodeArgs: Array<string> = [], cliArgs: Array<string> = []) => {
+export default async (path: string, nodeArgs: Array<string> = [], cliArgs: Array<string> = []): Promise<ProfileResults> => {
   let fullPath = path;
 
   // If our path isn't absolute, we will make it absolute using the CWD
