@@ -6,7 +6,8 @@
     "target": "es2018",
     "esModuleInterop": true,
     "moduleResolution": "Node",
-    "strict": true
+    "strict": true,
+    "module": "commonjs",
   },
   "include": [
     "./src",
