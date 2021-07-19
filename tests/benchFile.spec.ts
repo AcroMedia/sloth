@@ -13,6 +13,7 @@ describe('small data tests', () => {
   });
 
   it('ensures args are passed to bench()', async () => {
+    // @ts-expect-error Typescript doesn't like mocks
     const res = (await benchFile('./tests/__threads__/1.js', ['--node_test'], ['--cli_test']))[2];
 
     expect(bench).toHaveBeenCalled();
