@@ -1,23 +1,32 @@
 import { red, green } from 'colors';
 import fs from 'fs';
 import _path from 'path';
-// @ts-expect-error
+// @ts-expect-error This module doesn't have types
 import asciichart from 'asciichart';
 import createChart from '../helpers/createChart';
 
+interface ResultData {
+  start: number,
+  end: number,
+  time_elapsed: number,
+  timestep_ms: number,
+  mem_list: Array<number>,
+  start_usage_bytes: number,
+  peak_usage_bytes: number,
+  end_usage_bytes: number,
+  base_process_bytes: number,
+  last_updated: string
+}
+
+interface Comparison {
+  time_elapsed: number,
+  start_usage_bytes: number,
+  peak_usage_bytes: number,
+  end_usage_bytes: number
+}
+
 export default class ProfileResults {
-  public data: {
-    start: number,
-    end: number,
-    time_elapsed: number,
-    timestep_ms: number,
-    mem_list: Array<number>,
-    start_usage_bytes: number,
-    peak_usage_bytes: number,
-    end_usage_bytes: number,
-    base_process_bytes: number,
-    last_updated: string
-  };
+  public data: ResultData;
 
   /**
    * Wraps the results of the Profiler into a class.
@@ -28,14 +37,14 @@ export default class ProfileResults {
    * It is also helpful for providing useful jsdoc
    * definitions for the properties of the data.
    */
-  constructor(data: any) {
+  constructor(data: ResultData) {
     this.data = data;
   }
 
   /**
    * Get average memory usage.
    */
-  public averageMemoryUsage() {
+  public averageMemoryUsage(): number {
     let total = 0;
     this.data.mem_list.forEach((m: number) => {
       total += m;
@@ -47,17 +56,17 @@ export default class ProfileResults {
   /**
    * Get median memory usage.
    */
-  public medianMemoryUsage() {
+  public medianMemoryUsage(): number {
     return this.data.mem_list.sort((a, b) => a - b)[Math.round(this.data.mem_list.length / 2)];
   }
 
   /**
    * Get most frequently occuring value in memory usage.
    */
-  public modeMemoryUsage() {
-    const freqMap: any = {};
+  public modeMemoryUsage(): number {
+    const freqMap: { [key:number]: number } = {};
     let maxCount = 0;
-    let largest = null;
+    let largest = 0;
 
     this.data.mem_list.forEach((m) => {
       if (!freqMap[m]) freqMap[m] = 1;
@@ -77,7 +86,7 @@ export default class ProfileResults {
    *
    * @param {Number} ms
    */
-  public memoryAtElapsed(ms: number) {
+  public memoryAtElapsed(ms: number): number {
     if (ms > this.data.time_elapsed) throw new Error('Time provided was greater than total profile time.');
 
     return this.data.mem_list[Math.round(ms / this.data.timestep_ms)];
@@ -86,7 +95,7 @@ export default class ProfileResults {
   /**
    * Save data as a snapshot for comparison in future tests.
    */
-  public saveSnapshot(filename: string, path = `${_path.resolve('.')}/__snapshots__/`): void | object {
+  public saveSnapshot(filename: string, path = `${_path.resolve('.')}/__snapshots__/`): void | Record<string, unknown> {
     if (!filename) throw Error('You must provide a file name.');
 
     if (!fs.existsSync(path)) {
@@ -112,8 +121,8 @@ export default class ProfileResults {
     logResultsDiff?: boolean,
     graph?: string,
     graph_path?: string
-  } = {}) {
-    let obj;
+  } = {}): Record<string, unknown> {
+    let obj: Comparison;
 
     try {
       obj = JSON.parse(fs.readFileSync(path).toString());
@@ -132,7 +141,7 @@ export default class ProfileResults {
       };
     }
 
-    const comparison: any = {
+    const comparison: Comparison = {
       time_elapsed: this.data.time_elapsed - obj.time_elapsed,
       start_usage_bytes: this.data.start_usage_bytes - obj.start_usage_bytes,
       peak_usage_bytes: this.data.peak_usage_bytes - obj.peak_usage_bytes,
