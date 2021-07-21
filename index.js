@@ -5,5 +5,5 @@ import benchFile from './dist/functions/benchFile';
 export default {
   Profiler,
   bench,
-  benchFile
+  benchFile,
 };

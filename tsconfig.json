@@ -8,6 +8,11 @@
     "moduleResolution": "Node",
     "strict": true,
     "module": "commonjs",
+    "declaration": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ]
   },
   "include": [
     "./src",
