@@ -29,7 +29,7 @@ const memObj: {
   start_usage_bytes: 0,
   peak_usage_bytes: 0,
   end_usage_bytes: 0,
-  base_process_bytes: 0
+  base_process_bytes: 0,
 };
 
 // Check cycle
@@ -84,7 +84,7 @@ process.on('message', (message) => {
   }
 });
 
-function emergencyStop () {
+function emergencyStop() {
   if (process.send) process.send(memObj);
 
   // Make sure we don't leave the process hanging, in case we got disconnected

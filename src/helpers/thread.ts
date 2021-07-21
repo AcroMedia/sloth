@@ -1,5 +1,5 @@
-let func: Function,
-  args: Array<any>;
+let func: Function;
+let args: Array<any>;
 
 /* eslint-disable */
 process.on('message', async (message: { stage: string, func: string, args: Array<string> }) => {

@@ -14,7 +14,7 @@ describe('small data tests', () => {
     const prof = new Profiler(123, {
       timestep: 50,
       toFile: true,
-      waitAfterEnd: 1000
+      waitAfterEnd: 1000,
     });
 
     expect(prof.timestep).toBe(50);
@@ -27,7 +27,7 @@ describe('small data tests', () => {
       timestep: 100,
       toFile: false,
       waitAfterEnd: 1000,
-      trimNodeProcessUsage: true
+      trimNodeProcessUsage: true,
     });
 
     // Start the profiler. This will allow it to get baseline data for comparison.
@@ -56,7 +56,7 @@ describe('large data tests', () => {
       timestep: 100,
       toFile: false,
       waitAfterEnd: 1000,
-      trimNodeProcessUsage: true
+      trimNodeProcessUsage: true,
     });
 
     // This can take a lil while.

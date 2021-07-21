@@ -3,9 +3,9 @@ const serial = require('serialize-javascript');
 /**
  * Convert a function to it's serialized internals
  */
-export function getInternals (fn: Function, args?: Array<any>): { fn: string, fnArgs: Array<any> } {
+export function getInternals(fn: Function, args?: Array<any>): { fn: string, fnArgs: Array<any> } {
   const fnString = String(fn);
-  let fnArgs: Array<String>;
+  let fnArgs: Array<string>;
 
   // Arrow function with no brackets?
   if (fnString.split('=>') && !fnString.split('=>')[0].includes('(')) {
@@ -32,11 +32,11 @@ export function getInternals (fn: Function, args?: Array<any>): { fn: string, fn
   }
 
   return { fn: internal, fnArgs };
-};
+}
 
 /**
  * Creates a function that will automatically call itself when used in the JS Function() constructor
  */
-export function wrap(str: string, args: Array<String>): string {
+export function wrap(str: string, args: Array<string>): string {
   return `(async (${args.join(',')}) => { ${str} })()`;
-};
+}

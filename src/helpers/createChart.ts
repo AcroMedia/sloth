@@ -8,7 +8,7 @@ import d3 from 'd3';
 export default (data: Array<any>, path: string) => {
   const dom = new JSDOM('<html><body></body></html>');
   const margin = {
-    top: 20, right: 20, bottom: 30, left: 60
+    top: 20, right: 20, bottom: 30, left: 60,
   };
   const w = 900 - margin.left - margin.right;
   const h = 500 - margin.top - margin.bottom;
@@ -30,7 +30,7 @@ export default (data: Array<any>, path: string) => {
   // Data mapping
   const chartData: Array<Array<any>> = data.map((d: Array<any>) => d.map((val, i) => ({
     x: i,
-    y: val
+    y: val,
   })));
 
   // Get the largest of the two arrays so we can scale the graph properly
@@ -46,8 +46,8 @@ export default (data: Array<any>, path: string) => {
     .y((d: any) => y(d.y))
     .curve(d3.curveLinear);
 
-  x.domain(d3.extent(largest, d => d.x));
-  y.domain([0, d3.max(largest, d => d.y)]);
+  x.domain(d3.extent(largest, (d) => d.x));
+  y.domain([0, d3.max(largest, (d) => d.y)]);
 
   // First path
   svg.append('svg:path')

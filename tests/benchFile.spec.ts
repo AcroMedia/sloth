@@ -1,7 +1,7 @@
-jest.mock('../src/functions/bench', () => jest.fn((...args) => args));
-
 import bench from '../src/functions/bench';
 import benchFile from '../src/functions/benchFile';
+
+jest.mock('../src/functions/bench', () => jest.fn((...args) => args));
 
 describe('small data tests', () => {
   it('can read local paths', () => {

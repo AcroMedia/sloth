@@ -6,11 +6,11 @@ jest.setTimeout(20000);
 describe('small data tests', () => {
   it('ensures each type of function will be run properly', async () => {
     // Regular function
-    function a () { return false; }
+    function a() { return false; }
     expect(typeof await bench(a)).toBe('object');
 
     // Regular async function
-    async function b () { return false; }
+    async function b() { return false; }
     expect(typeof await bench(b)).toBe('object');
 
     // Anon regular function
@@ -56,7 +56,7 @@ describe('small data tests', () => {
 
   it('ensures data consistency with small data', async () => {
     // Function to test
-    function a () {
+    function a() {
       // Fill up an array with one million 0s.
       const myBigArray = new Array(1e6).fill(0);
       myBigArray.reverse();
@@ -66,7 +66,7 @@ describe('small data tests', () => {
       timestep: 100,
       toFile: false,
       waitAfterEnd: 1000,
-      trimNodeProcessUsage: true
+      trimNodeProcessUsage: true,
     });
 
     // Converted to MB
@@ -77,19 +77,19 @@ describe('small data tests', () => {
   });
 
   it('tests setup function', async () => {
-    expect(async () => await bench(() => {}, [], {
+    expect(async () => bench(() => {}, [], {
       setup: () => {
         console.log('setup test');
-      }
+      },
     })).not.toThrow();
   });
 
   it('tests requirements array', async () => {
-    expect(async () => await bench(() => {}, [], {
+    expect(async () => bench(() => {}, [], {
       requirements: [{
         name: 'fs',
-        path: 'fs'
-      }]
+        path: 'fs',
+      }],
     })).not.toThrow();
   });
 
@@ -113,7 +113,7 @@ jest.setTimeout(20000);
 describe('large data tests', () => {
   it('ensures data consistancy with big data', async () => {
     // Function to test
-    function a () {
+    function a() {
       // Fill up an array with one million 0s.
       const myBigArray = new Array(1e8).fill(0);
       myBigArray.reverse();
@@ -123,7 +123,7 @@ describe('large data tests', () => {
       timestep: 100,
       toFile: false,
       waitAfterEnd: 1000,
-      trimNodeProcessUsage: true
+      trimNodeProcessUsage: true,
     });
 
     // Converted to MB

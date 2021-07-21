@@ -1,6 +1,6 @@
-import ProfileResults from "../classes/ProfileResults";
-
 import { fork } from 'child_process';
+import ProfileResults from '../classes/ProfileResults';
+
 import Profiler from '../classes/Profiler';
 import { getInternals, wrap } from '../helpers/fnFormat';
 
@@ -32,7 +32,7 @@ import { getInternals, wrap } from '../helpers/fnFormat';
  */
 export default async (func: Function, args: Array<any> = [], opts: any = {}): Promise<ProfileResults> => {
   const child = fork(`${__dirname}/../../dist/helpers/thread.js`, opts.cliArgs || [], {
-    execArgv: ['--expose-gc'].concat(opts.nodeArgs || [])
+    execArgv: ['--expose-gc'].concat(opts.nodeArgs || []),
   });
 
   if (!child.pid) throw Error('Child process was not assigned a PID');
@@ -91,7 +91,7 @@ export default async (func: Function, args: Array<any> = [], opts: any = {}): Pr
         break;
 
       default:
-        //console.log(message);
+        // console.log(message);
         break;
     }
   });

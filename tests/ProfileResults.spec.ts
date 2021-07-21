@@ -1,6 +1,9 @@
 import colors from 'colors';
+import createChart from '../src/helpers/createChart';
 
-const mockData: {[key: string]: any} = {
+import ProfileResults from '../src/classes/ProfileResults';
+
+const mockData: { [key: string]: any } = {
   start: Date.now(),
   end: Date.now() + 1200,
   time_elapsed: 1200,
@@ -17,25 +20,22 @@ const mockData: {[key: string]: any} = {
     32690176,
     32690176,
     32690176,
-    32690176
+    32690176,
   ],
   start_usage_bytes: 32456704,
   peak_usage_bytes: 32690176,
   end_usage_bytes: 32690176,
-  base_process_bytes: 32456704
+  base_process_bytes: 32456704,
 };
 
 jest.mock('fs', () => ({
   existsSync: jest.fn(() => true),
   mkdirSync: jest.fn(),
   writeFileSync: jest.fn((path, data) => ({ path, data })),
-  readFileSync: jest.fn(() => JSON.stringify(mockData))
+  readFileSync: jest.fn(() => JSON.stringify(mockData)),
 }));
 
 jest.mock('../src/helpers/createChart', () => jest.fn());
-import createChart from'../src/helpers/createChart';
-
-import ProfileResults from '../src/classes/ProfileResults';
 
 colors.disable();
 
@@ -81,7 +81,7 @@ describe('ProfileResults', () => {
     expect(comparison.end_usage_bytes).toBe(0);
 
     // Test comparison by skewing the results a bit
-    const skewData: {[key: string]: any} = {};
+    const skewData: { [key: string]: any } = {};
     Object.keys(mockData).forEach((key: string) => {
       if (typeof mockData[key] === 'number') {
         skewData[key] = mockData[key] + 10;
@@ -102,7 +102,7 @@ describe('ProfileResults', () => {
     const log = jest.spyOn(console, 'log').mockImplementation(jest.fn());
 
     results.compareToSnapshot('', {
-      logResultsDiff: true
+      logResultsDiff: true,
     });
 
     expect(log.mock.calls[0][0]).toBe('Time elapsed: 0ms');
@@ -115,13 +115,13 @@ describe('ProfileResults', () => {
     const results = new ProfileResults(mockData);
 
     results.compareToSnapshot('', {
-      graph: 'text'
+      graph: 'text',
     });
 
     expect(createChart).not.toHaveBeenCalled();
 
     results.compareToSnapshot('', {
-      graph: 'image'
+      graph: 'image',
     });
 
     expect(createChart).toHaveBeenCalled();

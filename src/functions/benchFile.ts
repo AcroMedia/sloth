@@ -1,4 +1,4 @@
-import ProfileResults from "../classes/ProfileResults";
+import ProfileResults from '../classes/ProfileResults';
 
 const fs = require('fs');
 const bench = require('./bench');
