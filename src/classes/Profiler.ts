@@ -1,12 +1,12 @@
-import cp from 'child_process';
+import cp, { ChildProcess, ForkOptions } from 'child_process';
 import ProfileResults from './ProfileResults';
 
 export default class Profiler {
   public toWatch: number;
 
-  public results: any;
+  public results: null | ResultData;
 
-  public process: any;
+  public process: null | ChildProcess;
 
   public toFile: boolean;
 
@@ -37,7 +37,7 @@ export default class Profiler {
    * @param {Boolean=} opts.trimNodeProcessUsage
    * Trim base node process usage from tracked usage.
    */
-  constructor(pid: number, opts: any = {}) {
+  constructor(pid: number, opts: ProfilerOptions | Record<string, null> = {}) {
     this.toWatch = pid;
     this.results = null;
     this.process = null;
@@ -61,10 +61,10 @@ export default class Profiler {
       this.wait,
       this.toFile,
       this.trimNodeProcessUsage,
-    ] as ReadonlyArray<any>);
+    ] as ForkOptions);
 
     // Setup our message handler for when the process sends the data.
-    this.process.on('message', (message: string) => {
+    this.process.on('message', (message: ResultData) => {
       this.results = message;
 
       // Kill the watcher process (if it hasn't already).

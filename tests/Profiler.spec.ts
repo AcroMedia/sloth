@@ -1,4 +1,5 @@
 import Profiler from '../src/classes/Profiler';
+import ProfileResults from '../src/classes/ProfileResults';
 
 describe('small data tests', () => {
   it('ensures constructor works without options', () => {
@@ -38,7 +39,7 @@ describe('small data tests', () => {
     myBigArray.reverse();
 
     // Stop the profiler, get the data.
-    const results = await prof.end();
+    const results: ProfileResults = await prof.end();
 
     // Converted to MB
     const peak = results.data.peak_usage_bytes / (1000 * 1000);
@@ -68,7 +69,7 @@ describe('large data tests', () => {
     const myHugeArray = new Array(1e8).fill(0);
     myHugeArray.reverse();
 
-    const results = await prof.end();
+    const results: ProfileResults = await prof.end();
     const peak = results.data.peak_usage_bytes / (1000 * 1000);
 
     expect(peak).toBeGreaterThan(1190);

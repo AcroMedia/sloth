@@ -1,28 +1,23 @@
 import { red, green } from 'colors';
 import fs from 'fs';
 import _path from 'path';
-// @ts-expect-error This module doesn't have types
-import asciichart from 'asciichart';
+import { plot, red as cred, blue as cblue } from 'asciichart';
 import createChart from '../helpers/createChart';
 
-interface ResultData {
-  start: number,
-  end: number,
-  time_elapsed: number,
-  timestep_ms: number,
-  mem_list: Array<number>,
-  start_usage_bytes: number,
-  peak_usage_bytes: number,
-  end_usage_bytes: number,
-  base_process_bytes: number,
-  last_updated: string
-}
+function bytes(val: number) {
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 
-interface Comparison {
-  time_elapsed: number,
-  start_usage_bytes: number,
-  peak_usage_bytes: number,
-  end_usage_bytes: number
+  if (val === 0) {
+    return '0 Bytes';
+  }
+
+  const i: number = Math.floor(Math.log(val) / Math.log(1024));
+
+  if (i === 0) {
+    return `${val} ${sizes[i]}`;
+  }
+
+  return `${val / parseFloat((1024 ** i).toFixed(2))} ${sizes[i]}`;
 }
 
 export default class ProfileResults {
@@ -37,7 +32,9 @@ export default class ProfileResults {
    * It is also helpful for providing useful jsdoc
    * definitions for the properties of the data.
    */
-  constructor(data: ResultData) {
+  constructor(data: ResultData | null) {
+    if (!data) throw Error('Results data was null');
+
     this.data = data;
   }
 
@@ -121,10 +118,11 @@ export default class ProfileResults {
     logResultsDiff?: boolean,
     graph?: string,
     graph_path?: string
-  } = {}): Record<string, unknown> {
-    let obj: Comparison;
+  } = {}): Comparison | null {
+    let obj: ResultData;
 
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       obj = JSON.parse(fs.readFileSync(path).toString());
     } catch (e) {
       // Create a new snapshot an compare to that ()
@@ -151,20 +149,23 @@ export default class ProfileResults {
     if (options.logResultsDiff) {
       Object.keys(comparison).forEach((k) => {
         if (k === 'time_elapsed') return console.log(`Time elapsed: ${comparison[k] > 0 ? red(`+${comparison[k]}ms`) : green(`${comparison[k]}ms`)}`);
-        return console.log(`${(k[0].toUpperCase() + k.substr(1)).replace(/_/g, ' ')}: ${comparison[k] > 0 ? `+${red(bytes(comparison[k]))}` : `-${green(bytes(-comparison[k]))}`}`);
+        return console.log(`${(k[0].toUpperCase() + k.substr(1)).replace(/_/g, ' ')}: ${comparison[k] > 0 ? `+${red(bytes(Number(comparison[k])))}` : `-${green(bytes(-Number(comparison[k])))}`}`);
       });
     }
 
     if (options.graph) {
-      const chartData = [this.data.mem_list.map((n) => n / 1024), obj.mem_list.map((n: number) => n / 1024)];
+      const chartData = [
+        this.data.mem_list.map((n) => n / 1024),
+        obj.mem_list.map((n: number) => n / 1024),
+      ];
 
       if (options.graph === 'text') {
         // Graph memory chart
-        console.log(asciichart.plot(chartData.sort((a, b) => a.length - b.length), {
+        console.log(plot(chartData.sort((a, b) => a.length - b.length), {
           height: 10,
           colors: [
-            this.data.mem_list.length > obj.mem_list.length ? asciichart.red : asciichart.blue,
-            this.data.mem_list.length > obj.mem_list.length ? asciichart.blue : asciichart.red,
+            this.data.mem_list.length > obj.mem_list.length ? cred : cblue,
+            this.data.mem_list.length > obj.mem_list.length ? cblue : cred,
           ],
         }), '\nBlue - Current Run\nRed - Snapshot Run');
       } else if (options.graph === 'image') {
@@ -179,20 +180,4 @@ export default class ProfileResults {
 
     return comparison;
   }
-}
-
-function bytes(val: number) {
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-
-  if (val === 0) {
-    return '0 Bytes';
-  }
-
-  const i: number = Math.floor(Math.log(val) / Math.log(1024));
-
-  if (i === 0) {
-    return `${val} ${sizes[i]}`;
-  }
-
-  return `${val / parseFloat((1024 ** i).toFixed(2))} ${sizes[i]}`;
 }

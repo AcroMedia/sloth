@@ -4,10 +4,11 @@
     "./src/**/*.ts",
     "./tests/**/*.spec.ts",
     "index.js",
-    "./tests/__threads__/1.js"
+    "./types/global.d.ts"
   ],
   "exclude": [
     "./node_modules",
-    "./dist"
+    "./dist",
+    "./tests/__threads__/1.js"
   ]
 }
