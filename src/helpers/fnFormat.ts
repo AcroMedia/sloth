@@ -1,9 +1,16 @@
-const serial = require('serialize-javascript');
+import serial from 'serialize-javascript';
+
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 
 /**
  * Convert a function to it's serialized internals
  */
-export function getInternals(fn: Function, args?: Array<any>): { fn: string, fnArgs: Array<any> } {
+export function getInternals(
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  fn: Function | (() => unknown),
+  args?: Array<string>,
+): { fn: string, fnArgs: Array<any> } {
   const fnString = String(fn);
   let fnArgs: Array<string>;
 
@@ -18,7 +25,7 @@ export function getInternals(fn: Function, args?: Array<any>): { fn: string, fnA
 
   fnArgs = args && args.length > 0 ? fnArgs.map((a) => {
     // Make sure all args are serialized
-    let val = serial(args[fnArgs.indexOf(a)] || null);
+    let val: string = serial(args[fnArgs.indexOf(a)] || '');
 
     if (Array.isArray(val) || typeof val === 'object') val = JSON.stringify(val);
 

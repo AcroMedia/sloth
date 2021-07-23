@@ -5,7 +5,7 @@ import d3 from 'd3';
 /**
  * Output memory usage data to SVG line graph
  */
-export default (data: Array<any>, path: string) => {
+export default (data: Array<Array<unknown>>, path: string): void => {
   const dom = new JSDOM('<html><body></body></html>');
   const margin = {
     top: 20, right: 20, bottom: 30, left: 60,

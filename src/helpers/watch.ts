@@ -1,6 +1,6 @@
 import fs from 'fs';
 import pidusage from 'pidusage';
-// @ts-expect-error
+// @ts-expect-error Says it fails to import types but it works
 import { Status } from '@types/pidusage';
 
 const pid = process.argv[2];
@@ -32,10 +32,18 @@ const memObj: {
   base_process_bytes: 0,
 };
 
+function emergencyStop() {
+  if (process.send) process.send(memObj);
+
+  // Make sure we don't leave the process hanging, in case we got disconnected
+  process.exit();
+}
+
 // Check cycle
-setInterval(async () => {
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+setInterval(async (): Promise<void> => {
   console.log(pid);
-  // @ts-expect-error
+  // @ts-expect-error Status typing issue
   const data: Status = await pidusage(pid).catch((e: Error) => {
     console.error(e);
     emergencyStop();
@@ -79,14 +87,9 @@ process.on('message', (message) => {
         }
 
         if (process.send) process.send(memObj);
+      }).catch((e) => {
+        console.error(e);
       });
     }, wait);
   }
 });
-
-function emergencyStop() {
-  if (process.send) process.send(memObj);
-
-  // Make sure we don't leave the process hanging, in case we got disconnected
-  process.exit();
-}

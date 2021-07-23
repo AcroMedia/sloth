@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 let func: Function;
 let args: Array<any>;
 
