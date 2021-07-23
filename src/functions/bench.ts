@@ -30,14 +30,20 @@ import { getInternals, wrap } from '../helpers/fnFormat';
  * @param {Array=} opts.cliArgs
  * Array of args to pass to the file itself
  */
-export default async (func: Function, args: Array<any> = [], opts: any = {}): Promise<ProfileResults> => {
+export default async (
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  func: Function | (() => null),
+  args: Array<unknown> = [],
+  opts: BenchOptions = {},
+  profilerOpts: ProfilerOptions = {},
+):Promise<ProfileResults> => {
   const child = fork(`${__dirname}/../../dist/helpers/thread.js`, opts.cliArgs || [], {
     execArgv: ['--expose-gc'].concat(opts.nodeArgs || []),
   });
 
   if (!child.pid) throw Error('Child process was not assigned a PID');
 
-  const profiler = new Profiler(child.pid, opts);
+  const profiler = new Profiler(child.pid, profilerOpts);
   // We have to redefine require() since the forked process doesn't do it for us :(
   let formatted = 'const require = global.process.mainModule.require;';
   let results: ProfileResults;
@@ -76,7 +82,8 @@ export default async (func: Function, args: Array<any> = [], opts: any = {}): Pr
   child.send({ stage: 'preload', func: formatted, args });
 
   // Control of the profiler is given to the child process.
-  child.on('message', async (message: string) => {
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  child.on('message', async (message: string): Promise<void> => {
     switch (message) {
       case 'preloaded':
         // Start profiler first in order to allow the memory watcher to get baseline data.
@@ -91,7 +98,6 @@ export default async (func: Function, args: Array<any> = [], opts: any = {}): Pr
         break;
 
       default:
-        // console.log(message);
         break;
     }
   });

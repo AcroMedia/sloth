@@ -5,6 +5,16 @@ interface ProfilerOptions {
   trimNodeProcessUsage?: boolean
 }
 
+interface BenchOptions {
+  setup?: () => null,
+  requirements?: Array<{
+    name: string,
+    path: string
+  }>,
+  nodeArgs?: Array<string>,
+  cliArgs?: Array<string>,
+}
+
 /**
  * The object that will contain all of the data found in ProfileResults
  */
