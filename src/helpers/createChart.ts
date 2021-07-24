@@ -5,7 +5,7 @@ import d3 from 'd3';
 /**
  * Output memory usage data to SVG line graph
  */
-export default (data: Array<Array<unknown>>, path: string): void => {
+export default (data: Array<Array<number>>, path: string): void => {
   const dom = new JSDOM('<html><body></body></html>');
   const margin = {
     top: 20, right: 20, bottom: 30, left: 60,
@@ -13,7 +13,7 @@ export default (data: Array<Array<unknown>>, path: string): void => {
   const w = 900 - margin.left - margin.right;
   const h = 500 - margin.top - margin.bottom;
 
-  let svg: any = d3.select(dom.window.document).select('body')
+  let svg: Selection<unknown> = d3.select(dom.window.document).select('body')
     .append('svg')
     .attr('width', w + margin.left + margin.right)
     .attr('height', h + margin.top + margin.bottom);
@@ -28,21 +28,30 @@ export default (data: Array<Array<unknown>>, path: string): void => {
     .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
   // Data mapping
-  const chartData: Array<Array<any>> = data.map((d: Array<any>) => d.map((val, i) => ({
-    x: i,
-    y: val,
-  })));
+  const chartData: { x: number, y: number }[][] = data.map(
+    (d: Array<number>) => d.map(
+      (val: number, i) => ({
+        x: i,
+        y: val,
+      }),
+    ),
+  );
 
   // Get the largest of the two arrays so we can scale the graph properly
-  const largest: Array<any> = chartData.sort((a: any[], b: any[]) => a.length - b.length)[0];
+  const largest: { x: number, y: number }[] = chartData.sort(
+    (a: { x: number, y: number }[], b: { x: number, y: number }[]) => a.length - b.length,
+  )[0];
 
   // Dimension functions, used for data scaling
-  const x: any = d3.scaleLinear().range([0, w]);
-  const y: any = d3.scaleLinear().range([h, 0]);
+  const x: d3.ScaleLinear<number, number> = d3.scaleLinear().range([0, w]);
+  const y: d3.ScaleLinear<number, number> = d3.scaleLinear().range([h, 0]);
 
   // Use scaling functions from before to create a new line creating function
+  // eslint-disable-next-line @typescript-eslint/ban-types
   const lineFunc: Function = d3.line()
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     .x((d: any) => x(d.x))
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     .y((d: any) => y(d.y))
     .curve(d3.curveLinear);
 
