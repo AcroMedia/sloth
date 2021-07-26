@@ -19,7 +19,6 @@ export default (data: Array<Array<number>>, path: string): void => {
     .attr('height', h + margin.top + margin.bottom);
 
   // Background cheat
-  /* eslint-disable */
   svg.append('rect')
     .attr('fill', 'white')
     .attr('width', '100%')
