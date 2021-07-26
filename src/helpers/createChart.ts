@@ -13,7 +13,7 @@ export default (data: Array<Array<number>>, path: string): void => {
   const w = 900 - margin.left - margin.right;
   const h = 500 - margin.top - margin.bottom;
 
-  let svg: any = d3.select(dom.window.document).select('body')
+  let svg: d3.Selection<SVGSVGElement, unknown, null, undefined> = d3.select(dom.window.document).select('body')
     .append('svg')
     .attr('width', w + margin.left + margin.right)
     .attr('height', h + margin.top + margin.bottom);
@@ -24,6 +24,7 @@ export default (data: Array<Array<number>>, path: string): void => {
     .attr('width', '100%')
     .attr('height', '100%');
 
+  // @ts-expect-error d3 is bound to get mad, there are like 3 different SVG types
   svg = svg.append('g')
     .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
