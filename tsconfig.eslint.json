@@ -3,7 +3,7 @@
   "include": [
     "./src/**/*.ts",
     "./tests/**/*.spec.ts",
-    "index.js",
+    "index.ts",
     "./types/global.d.ts"
   ],
   "exclude": [

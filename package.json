@@ -2,7 +2,7 @@
   "name": "@acromedia/sloth",
   "version": "1.1.4",
   "description": "Resource profiler for node, utilizing child processes",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test-ci": "jest -t=\"small data tests|ProfileResults\" --forceExit",
     "test-min": "jest --coverage -t=\"small data tests|ProfileResults\"",

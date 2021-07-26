@@ -15,7 +15,7 @@
     ]
   },
   "include": [
-    "./src", "./types/global.d.ts",
+    "./src", "./types/global.d.ts", "index.ts"
   ],
   "exclude": [
     "./node_modules",
