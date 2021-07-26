@@ -42,7 +42,6 @@ function emergencyStop() {
 // Check cycle
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 setInterval(async (): Promise<void> => {
-  console.log(pid);
   // @ts-expect-error Status typing issue
   const data: Status = await pidusage(pid).catch((e: Error) => {
     console.error(e);
