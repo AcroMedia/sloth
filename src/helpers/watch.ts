@@ -87,7 +87,7 @@ process.on('message', (message) => {
         }
 
         if (process.send) process.send(memObj);
-      }).catch((e) => {
+      })?.catch((e) => {
         console.error(e);
       });
     }, wait);
