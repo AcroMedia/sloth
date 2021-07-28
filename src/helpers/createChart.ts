@@ -56,9 +56,9 @@ export default (data: Array<Array<number>>, path: string): void => {
     .y((d: any) => y(d.y))
     .curve(d3.curveLinear);
 
-  // @ts-expect-error
+  // @ts-expect-error Domain isn't supposed to be a function that takes params?
   x.domain(d3.extent(largest, (d) => d.x));
-  // @ts-expect-error
+  // @ts-expect-error Same domain issue.
   y.domain([0, d3.max(largest, (d) => d.y)]);
 
   // First path
