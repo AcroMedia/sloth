@@ -3,6 +3,8 @@ import createChart from '../src/helpers/createChart';
 
 import ProfileResults from '../src/classes/ProfileResults';
 
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 const mockData: { [key: string]: any } = {
   start: Date.now(),
   end: Date.now() + 1200,
@@ -56,12 +58,14 @@ describe('ProfileResults', () => {
   it('tests snapshotting', () => {
     const results = new ProfileResults(mockData);
 
-    // @ts-expect-error
+    // @ts-expect-error Purposeful error
     expect(() => results.saveSnapshot()).toThrow();
 
-    // @ts-expect-error
+    // @ts-expect-error Purposeful error
     const savedData: { data: any, path: string } = results.saveSnapshot('name', '/home/snapshots/');
-    const parsed = JSON.parse(savedData.data);
+    const parsed: {
+      [key: string]: any
+    } = JSON.parse(savedData.data);
 
     expect(savedData.path).toBe('/home/snapshots/name.json');
 
@@ -84,7 +88,7 @@ describe('ProfileResults', () => {
     const skewData: { [key: string]: any } = {};
     Object.keys(mockData).forEach((key: string) => {
       if (typeof mockData[key] === 'number') {
-        skewData[key] = mockData[key] + 10;
+        skewData[key] = Number(mockData[key]) + 10;
       }
     });
     const skewResults = new ProfileResults(skewData);

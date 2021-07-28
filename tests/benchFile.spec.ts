@@ -1,7 +1,9 @@
 import bench from '../src/functions/bench';
 import benchFile from '../src/functions/benchFile';
 
-jest.mock('../src/functions/bench', () => jest.fn((...args) => args));
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
+jest.mock('../src/functions/bench', () => jest.fn((...args: Array<string>) => args));
 
 describe('small data tests', () => {
   it('can read local paths', () => {
@@ -13,8 +15,10 @@ describe('small data tests', () => {
   });
 
   it('ensures args are passed to bench()', async () => {
-    // @ts-expect-error Typescript doesn't like mocks
-    const res = (await benchFile('./tests/__threads__/1.js', ['--node_test'], ['--cli_test']))[2];
+    const res: {
+      nodeArgs: string,
+      cliArgs: string
+    } = (await benchFile('./tests/__threads__/1.js', ['--node_test'], ['--cli_test']))[2];
 
     expect(bench).toHaveBeenCalled();
 

@@ -1,6 +1,10 @@
 import ProfileResults from '../src/classes/ProfileResults';
 import bench from '../src/functions/bench';
 
+/* eslint-disable @typescript-eslint/require-await */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable jest/valid-expect */
+
 jest.setTimeout(20000);
 
 describe('small data tests', () => {
@@ -48,10 +52,10 @@ describe('small data tests', () => {
     expect(typeof await bench(async () => false)).toBe('object');
 
     // Function with args (wrapped)
-    expect(typeof await bench((x: any, y: any) => x + y, [1, 1])).toBe('object');
+    expect(typeof await bench((x: number, y: number) => x + y, [1, 1])).toBe('object');
 
     // Function with args (not wrapped)
-    expect(typeof await bench((x: any) => x, ['1'])).toBe('object');
+    expect(typeof await bench((x: string) => x, ['1'])).toBe('object');
   });
 
   it('ensures data consistency with small data', async () => {
