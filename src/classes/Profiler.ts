@@ -1,4 +1,5 @@
 import cp, { ChildProcess, ForkOptions } from 'child_process';
+import fs from 'fs';
 import path from 'path';
 import ProfileResults from './ProfileResults';
 
@@ -56,13 +57,23 @@ export default class Profiler {
    * Starts the watching process by spawning a fork of the monitoring file.
    */
   async start(): Promise<Profiler> {
-    this.process = cp.fork(path.join(__dirname, '../helpers/watch.js'), [
-      this.toWatch,
-      this.timestep,
-      this.wait,
-      this.toFile,
-      this.trimNodeProcessUsage,
-    ] as ForkOptions);
+    let execArgv: Array<string> = [];
+    let procPath = path.join(__dirname, '../helpers/watch.js');
+
+    if (!fs.existsSync(procPath)) {
+      procPath = procPath.replace('.js', '.ts');
+      execArgv = ['-r', 'ts-node/register'];
+    }
+
+    this.process = cp.fork(procPath, [
+      this.toWatch as unknown as string,
+      this.timestep as unknown as string,
+      this.wait as unknown as string,
+      this.toFile as unknown as string,
+      this.trimNodeProcessUsage as unknown as string,
+    ], {
+      execArgv,
+    });
 
     // Setup our message handler for when the process sends the data.
     this.process.on('message', (message: ResultData) => {

@@ -1,4 +1,5 @@
 import { fork } from 'child_process';
+import fs from 'fs';
 import path from 'path';
 import ProfileResults from '../classes/ProfileResults';
 
@@ -38,8 +39,16 @@ export default async (
   opts: BenchOptions = {},
   profilerOpts: ProfilerOptions = {},
 ):Promise<ProfileResults> => {
-  const child = fork(path.join(__dirname, '../helpers/thread.js'), opts.cliArgs || [], {
-    execArgv: ['--expose-gc'].concat(opts.nodeArgs || []),
+  let execArgv = ['--expose-gc'];
+  let procPath = path.join(__dirname, '../helpers/thread.js');
+
+  if (!fs.existsSync(procPath)) {
+    procPath = procPath.replace('.js', '.ts');
+    execArgv = execArgv.concat(['-r', 'ts-node/register']);
+  }
+
+  const child = fork(procPath, opts.cliArgs || [], {
+    execArgv: execArgv.concat(opts.nodeArgs || []),
   });
 
   if (!child.pid) throw Error('Child process was not assigned a PID');
