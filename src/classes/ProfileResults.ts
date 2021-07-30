@@ -92,7 +92,7 @@ export default class ProfileResults {
   /**
    * Save data as a snapshot for comparison in future tests.
    */
-  public saveSnapshot(filename: string, path = `${_path.resolve('.')}/__snapshots__/`): void | Record<string, unknown> {
+  public saveSnapshot(filename: string, path = _path.join(_path.resolve('.'), '__snapshots__')): void | Record<string, unknown> {
     if (!filename) throw Error('You must provide a file name.');
 
     if (!fs.existsSync(path)) {
@@ -105,25 +105,18 @@ export default class ProfileResults {
     return fs.writeFileSync(`${path + filename}.json`, JSON.stringify(this.data), 'utf8');
   }
 
-  /**
-   * Compare the current results to another snapshot.
-   *
-   * @param {String} path
-   * @param {Object} options
-   * @param {Boolean=} [options.logResultsDiff=false]
-   * @param {String=} options.graph
-   * @param {String=} options.graph_path
-   */
-  public compareToSnapshot(path: string, options: {
-    logResultsDiff?: boolean,
-    graph?: string,
-    graph_path?: string
-  } = {}): Comparison | null {
+  public compareToSnapshot(
+    path: string,
+    options: {
+      logResultsDiff?: boolean,
+      graph?: string,
+      graph_path?: string
+    } = {},
+  ): Comparison | null {
     let obj: ResultData;
 
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      obj = JSON.parse(fs.readFileSync(path).toString());
+      obj = JSON.parse(fs.readFileSync(path).toString()) as ResultData;
     } catch (e) {
       // Create a new snapshot an compare to that ()
       const filename = path.split('/')[path.split('/').length - 1].split('.')[0];
@@ -148,8 +141,19 @@ export default class ProfileResults {
 
     if (options.logResultsDiff) {
       Object.keys(comparison).forEach((k) => {
-        if (k === 'time_elapsed') return console.log(`Time elapsed: ${comparison[k] > 0 ? red(`+${comparison[k]}ms`) : green(`${comparison[k]}ms`)}`);
-        return console.log(`${(k[0].toUpperCase() + k.substr(1)).replace(/_/g, ' ')}: ${comparison[k] > 0 ? `+${red(bytes(Number(comparison[k])))}` : `-${green(bytes(-Number(comparison[k])))}`}`);
+        const isLess = comparison[k] > 0;
+        const color = isLess ? red : green;
+        const symbol = isLess ? '+' : '-';
+
+        if (k === 'time_elapsed') {
+          console.log(`Time elapsed: ${color(`${String(comparison[k])}ms`)}`);
+
+          return;
+        }
+
+        console.log(`${(k[0].toUpperCase() + k.substr(1)).replace(/_/g, ' ')}: ${color(`${symbol}${
+          bytes(Number(isLess ? comparison[k] : -comparison[k]))
+        }`)}`);
       });
     }
 
