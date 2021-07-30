@@ -29,7 +29,7 @@ export default async (
 
   // Wrap entire thing into a JS function, then pass it to `bench()`
   // eslint-disable-next-line @typescript-eslint/no-implied-eval
-  return bench(Function(content) as () => unknown, [], {
+  return bench(Function(content) as () => any, [], {
     nodeArgs,
     cliArgs,
   });

@@ -32,7 +32,7 @@ import { getInternals, wrap } from '../helpers/fnFormat';
  */
 export default async (
   // eslint-disable-next-line @typescript-eslint/ban-types
-  func: () => unknown,
+  func: (...args: any[]) => any,
   args: Array<unknown> = [],
   opts: BenchOptions = {},
   profilerOpts: ProfilerOptions = {},

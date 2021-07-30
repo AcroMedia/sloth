@@ -71,7 +71,7 @@ describe('small data tests', () => {
       toFile: false,
       waitAfterEnd: 1000,
       trimNodeProcessUsage: true,
-    });
+    } as BenchOptions);
 
     // Converted to MB
     const peak = results.data.peak_usage_bytes / (1000 * 1000);
@@ -129,7 +129,7 @@ describe('large data tests', () => {
       toFile: false,
       waitAfterEnd: 1000,
       trimNodeProcessUsage: true,
-    });
+    } as BenchOptions);
 
     // Converted to MB
     const peak = results.data.peak_usage_bytes / (1000 * 1000);
