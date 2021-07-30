@@ -38,7 +38,7 @@ export default async (
   opts: BenchOptions = {},
   profilerOpts: ProfilerOptions = {},
 ):Promise<ProfileResults> => {
-  const child = fork(path.join(__dirname, '/../../dist/src/helpers/thread.js'), opts.cliArgs || [], {
+  const child = fork(path.join(__dirname, '../helpers/thread.js'), opts.cliArgs || [], {
     execArgv: ['--expose-gc'].concat(opts.nodeArgs || []),
   });
 
