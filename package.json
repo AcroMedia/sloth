@@ -64,6 +64,7 @@
     ],
     "testPathIgnorePatterns": [
       "<rootDir>/tests/__threads__"
-    ]
+    ],
+    "moduleFileExtensions": ["js", "jsx", "ts", "tsx", "json", "node", "ts", "d.ts"]
   }
 }

@@ -7,7 +7,7 @@ jest.mock('../src/functions/bench', () => jest.fn((...args: Array<string>) => ar
 
 describe('small data tests', () => {
   it('can read local paths', () => {
-    expect(() => benchFile('./tests/__threads__/1.js')).not.toThrow();
+    expect(() => benchFile('tests/__threads__/1.js')).not.toThrow();
   });
 
   it('can read absolute paths', () => {

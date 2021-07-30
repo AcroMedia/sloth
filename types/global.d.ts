@@ -28,7 +28,8 @@ declare interface ResultData {
   peak_usage_bytes: number,
   end_usage_bytes: number,
   base_process_bytes: number,
-  last_updated?: string
+  last_updated?: string,
+  [key: string]: any
 }
 
 /**

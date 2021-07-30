@@ -89,7 +89,7 @@ describe('ProfileResults', () => {
     expect(comparison.end_usage_bytes).toBe(0);
 
     // Test comparison by skewing the results a bit
-    const skewData: ResultData = mockData;
+    const skewData: ResultData = { ...mockData };
     Object.keys(mockData).forEach((key: string) => {
       if (typeof mockData[key] === 'number') {
         skewData[key] = Number(mockData[key]) + 10;
