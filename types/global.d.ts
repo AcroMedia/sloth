@@ -1,11 +1,11 @@
-interface ProfilerOptions {
+declare interface ProfilerOptions {
   toFile?: boolean,
   timestep?: number,
   waitAfterEnd?: number,
   trimNodeProcessUsage?: boolean
 }
 
-interface BenchOptions {
+declare interface BenchOptions {
   setup?: () => null,
   requirements?: Array<{
     name: string,
@@ -18,7 +18,7 @@ interface BenchOptions {
 /**
  * The object that will contain all of the data found in ProfileResults
  */
-interface ResultData {
+declare interface ResultData {
   start: number,
   end: number,
   time_elapsed: number,
@@ -34,7 +34,7 @@ interface ResultData {
 /**
  * The data found in a comparison, like in the ProfileResults snapshot comparison
  */
-interface Comparison {
+declare interface Comparison {
   time_elapsed: number,
   start_usage_bytes: number,
   peak_usage_bytes: number,

@@ -18,6 +18,7 @@ describe('small data tests', () => {
     const res: {
       nodeArgs: string,
       cliArgs: string
+      // @ts-expect-error Jest hates mocks
     } = (await benchFile('./tests/__threads__/1.js', ['--node_test'], ['--cli_test']))[2];
 
     expect(bench).toHaveBeenCalled();

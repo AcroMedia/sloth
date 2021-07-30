@@ -84,6 +84,7 @@ describe('small data tests', () => {
     expect(async () => bench(() => {}, [], {
       setup: () => {
         console.log('setup test');
+        return null;
       },
     })).not.toThrow();
   });

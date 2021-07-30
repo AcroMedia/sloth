@@ -3,6 +3,7 @@
   "include": [
     "./src/**/*.ts",
     "./tests/**/*.spec.ts",
+    "./tests/__threads__/1.ts",
     "index.ts",
     "./types/global.d.ts"
   ],

@@ -1,11 +1,13 @@
 import colors from 'colors';
 import createChart from '../src/helpers/createChart';
 
+import '../types/global';
+
 import ProfileResults from '../src/classes/ProfileResults';
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-const mockData: { [key: string]: any } = {
+const mockData: ResultData = {
   start: Date.now(),
   end: Date.now() + 1200,
   time_elapsed: 1200,
@@ -79,13 +81,15 @@ describe('ProfileResults', () => {
     const results = new ProfileResults(mockData);
     const comparison = results.compareToSnapshot('');
 
+    if (!comparison) return;
+
     expect(comparison.time_elapsed).toBe(0);
     expect(comparison.start_usage_bytes).toBe(0);
     expect(comparison.peak_usage_bytes).toBe(0);
     expect(comparison.end_usage_bytes).toBe(0);
 
     // Test comparison by skewing the results a bit
-    const skewData: { [key: string]: any } = {};
+    const skewData: ResultData = mockData;
     Object.keys(mockData).forEach((key: string) => {
       if (typeof mockData[key] === 'number') {
         skewData[key] = Number(mockData[key]) + 10;
@@ -93,6 +97,8 @@ describe('ProfileResults', () => {
     });
     const skewResults = new ProfileResults(skewData);
     const skewCompare = skewResults.compareToSnapshot('');
+
+    if (!skewCompare) return;
 
     expect(skewCompare.time_elapsed).toBe(10);
     expect(skewCompare.start_usage_bytes).toBe(10);
