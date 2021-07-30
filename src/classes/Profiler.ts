@@ -1,4 +1,5 @@
 import cp, { ChildProcess, ForkOptions } from 'child_process';
+import path from 'path';
 import ProfileResults from './ProfileResults';
 
 export default class Profiler {
@@ -55,7 +56,7 @@ export default class Profiler {
    * Starts the watching process by spawning a fork of the monitoring file.
    */
   async start(): Promise<Profiler> {
-    this.process = cp.fork(`${__dirname}/../../../dist/src/helpers/watch.js`, [
+    this.process = cp.fork(path.join(__dirname, '/../../dist/src/helpers/watch.js'), [
       this.toWatch,
       this.timestep,
       this.wait,

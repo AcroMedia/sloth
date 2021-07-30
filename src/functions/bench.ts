@@ -1,4 +1,5 @@
 import { fork } from 'child_process';
+import path from 'path';
 import ProfileResults from '../classes/ProfileResults';
 
 import Profiler from '../classes/Profiler';
@@ -37,7 +38,7 @@ export default async (
   opts: BenchOptions = {},
   profilerOpts: ProfilerOptions = {},
 ):Promise<ProfileResults> => {
-  const child = fork(`${__dirname}/../helpers/thread.js`, opts.cliArgs || [], {
+  const child = fork(path.join(__dirname, '/../../dist/src/helpers/thread.js'), opts.cliArgs || [], {
     execArgv: ['--expose-gc'].concat(opts.nodeArgs || []),
   });
 
