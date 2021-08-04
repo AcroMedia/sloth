@@ -5,7 +5,7 @@ import bench from '../src/functions/bench';
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable jest/valid-expect */
 
-jest.setTimeout(20000);
+jest.setTimeout(30000);
 
 describe('small data tests', () => {
   it('ensures each type of function will be run properly', async () => {
@@ -62,7 +62,7 @@ describe('small data tests', () => {
     // Function to test
     function a() {
       // Fill up an array with one million 0s.
-      const myBigArray = new Array(1e6).fill(0);
+      const myBigArray = new Array(1e6).fill(1);
       myBigArray.reverse();
     }
 
