@@ -15,7 +15,7 @@ const memObj: {
   end: number,
   time_elapsed: number,
   timestep_ms: number,
-  mem_list: Array<any>,
+  mem_list: Array<number>,
   start_usage_bytes: number,
   peak_usage_bytes: number,
   end_usage_bytes: number,

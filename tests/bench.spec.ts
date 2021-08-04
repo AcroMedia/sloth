@@ -66,12 +66,12 @@ describe('small data tests', () => {
       myBigArray.reverse();
     }
 
-    const results: ProfileResults = await bench(a, [], {
+    const results: ProfileResults = await bench(a, [], {}, {
       timestep: 100,
       toFile: false,
       waitAfterEnd: 1000,
       trimNodeProcessUsage: true,
-    } as BenchOptions);
+    } as ProfilerOptions);
 
     // Converted to MB
     const peak = results.data.peak_usage_bytes / (1000 * 1000);
