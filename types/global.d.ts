@@ -33,6 +33,13 @@ declare interface ResultData {
 }
 
 /**
+ * ProfileResults
+ */
+declare interface ProfileResults {
+  data: ResultData
+}
+
+/**
  * The data found in a comparison, like in the ProfileResults snapshot comparison
  */
 declare interface Comparison {
