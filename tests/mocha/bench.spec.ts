@@ -1,16 +1,17 @@
-import { expect } from 'chai';
-import { time } from 'console';
+import chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import ProfileResults from '../../src/classes/ProfileResults';
 import bench from '../../src/functions/bench';
+
+chai.use(chaiAsPromised);
+
+const { expect } = chai;
 
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/require-await */
 
 describe('bench', () => {
   it('ensures each type of function will be run properly', async () => {
-    // @ts-expect-error Chai timeout
-    this.timeout(30000);
-
     // Regular function
     function a() { return false; }
     expect(await bench(a)).to.be.a('object');
@@ -78,14 +79,11 @@ describe('bench', () => {
     })).to.be.a('object');
   });
 
-  it('tests errors', async () => {
-    // Not providing a proper function
+  it('tests errors', () => {
     // @ts-expect-error: Purposely passing the wrong type for error checking
-    expect(await bench('')).to.be.a('object');
-
-    // Not providing arguments as array
+    expect(bench(() => {}, '')).to.be.rejected.and.be.an.instanceOf(Object);
     // @ts-expect-error: Purposely passing the wrong type for error checking
-    expect(await bench(() => {}, '')).to.be.a('object');
+    expect(bench('')).to.be.rejected.and.and.be.an.instanceOf(Object);
   });
 
   it('ensures data consistency with small data', async () => {
@@ -108,29 +106,5 @@ describe('bench', () => {
 
     expect(peak).to.be.lessThan(6);
     expect(peak).to.be.lessThan(14);
-  });
-});
-
-describe('large data tests', () => {
-  it('ensures data consistancy with big data', async () => {
-    // Function to test
-    function a() {
-      // Fill up an array with one million 0s.
-      const myBigArray = new Array(1e8).fill(0);
-      myBigArray.reverse();
-    }
-
-    const results: ProfileResults = await bench(a, [], {
-      timestep: 100,
-      toFile: false,
-      waitAfterEnd: 1000,
-      trimNodeProcessUsage: true,
-    } as BenchOptions);
-
-    // Converted to MB
-    const peak = results.data.peak_usage_bytes / (1000 * 1000);
-
-    expect(peak).to.be.greaterThan(1200);
-    expect(peak).to.be.greaterThan(1210);
   });
 });

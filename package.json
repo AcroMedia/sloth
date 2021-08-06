@@ -6,7 +6,7 @@
   "scripts": {
     "test-ci": "jest ./tests/jest -t=\"small data tests|ProfileResults\" --forceExit",
     "test-min": "jest --coverage ./tests/jest -t=\"small data tests|ProfileResults\" --detectOpenHandles; yarn mocha",
-    "mocha": "mocha --require ts-node/register ./tests/mocha/*.spec.ts --timeout 20000",
+    "mocha": "mocha --require ts-node/register ./tests/mocha/*.spec.ts --timeout 60000",
     "test-all": "jest --coverage ./tests/jest",
     "lint": "eslint .",
     "build": "./node_modules/typescript/bin/tsc --declaration",
@@ -50,6 +50,7 @@
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.2",
     "chai": "^4.3.4",
+    "chai-as-promised": "^7.1.1",
     "eslint": "^7.30.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-plugin-import": "^2.23.4",
