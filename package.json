@@ -4,10 +4,10 @@
   "description": "Resource profiler for node, utilizing child processes",
   "main": "dist/index.js",
   "scripts": {
-    "test-ci": "jest ./tests/jest -t=\"small data tests|ProfileResults\" --forceExit",
-    "test-min": "jest --coverage ./tests/jest -t=\"small data tests|ProfileResults\" --detectOpenHandles; yarn mocha",
+    "test-ci": "yarn jest-min --forceExit",
+    "jest-min": "jest --coverage ./tests/jest -t=\"small data tests|ProfileResults\"",
+    "test-min": "yarn jest-min; yarn mocha",
     "mocha": "mocha --require ts-node/register ./tests/mocha/*.spec.ts --timeout 60000",
-    "test-all": "jest --coverage ./tests/jest",
     "lint": "eslint .",
     "build": "./node_modules/typescript/bin/tsc --declaration",
     "release": "semantic-release"
