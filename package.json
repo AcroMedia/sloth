@@ -4,7 +4,7 @@
   "description": "Resource profiler for node, utilizing child processes",
   "main": "dist/index.js",
   "scripts": {
-    "mocha": "mocha --require ts-node/register ./tests/mocha/*.spec.ts --timeout 80000 --exit",
+    "mocha": "mocha --require ts-node/register ./tests/mocha/*.spec.ts --timeout 120000 --exit",
     "jest-min": "jest --coverage ./tests/jest -t=\"small data tests|ProfileResults\"",
     "test-min": "yarn jest-min; yarn mocha",
     "test-ci": "yarn test-min;",
