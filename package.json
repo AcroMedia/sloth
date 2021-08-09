@@ -65,12 +65,13 @@
   },
   "jest": {
     "preset": "ts-jest",
-    "testRegex": "./tests/.*.ts$",
+    "testRegex": "./tests/jest/.*.ts$",
     "coverageReporters": [
       "text"
     ],
     "testPathIgnorePatterns": [
-      "<rootDir>/tests/__threads__"
+      "<rootDir>/tests/__threads__",
+      "<rootDir>/tests/mocha"
     ],
     "moduleFileExtensions": [
       "js",

@@ -1,5 +1,4 @@
 import Profiler from '../../src/classes/Profiler';
-import ProfileResults from '../../src/classes/ProfileResults';
 
 describe('small data tests', () => {
   it('ensures constructor works without options', () => {

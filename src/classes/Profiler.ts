@@ -1,4 +1,4 @@
-import cp, { ChildProcess, ForkOptions } from 'child_process';
+import cp, { ChildProcess } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import ProfileResults from './ProfileResults';

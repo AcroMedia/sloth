@@ -22,7 +22,8 @@
     "rules": {
       "no-console": "off",
       "no-await-in-loop": "off",
-      "no-underscore-dangle": "off"
+      "no-underscore-dangle": "off",
+      "jest/valid-expect": "off"
     }
   }
   
