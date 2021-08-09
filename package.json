@@ -9,7 +9,7 @@
     "test-min": "yarn jest-min; yarn mocha",
     "test-ci": "yarn test-min;",
     "lint": "eslint .",
-    "build": "./node_modules/typescript/bin/tsc --declaration",
+    "build": "tsc",
     "release": "semantic-release"
   },
   "repository": {
