@@ -1,6 +1,6 @@
 {
   "name": "@acromedia/sloth",
-  "version": "1.1.4",
+  "version": "2.0.0",
   "description": "Resource profiler for node, utilizing child processes",
   "main": "dist/index.js",
   "scripts": {
