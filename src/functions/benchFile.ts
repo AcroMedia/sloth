@@ -1,7 +1,7 @@
-const fs = require('fs');
-const bench = require('./bench');
+import fs from 'fs';
 
-/* eslint-disable */
+import ProfileResults from '../classes/ProfileResults';
+import bench from './bench';
 
 /**
  * This function is just a bit of a shortcut to bench().
@@ -13,7 +13,11 @@ const bench = require('./bench');
  * @param {Array=} nodeOpts
  * @param {Array=} cliOpts
  */
-module.exports = async (path, nodeArgs = [], cliArgs = []) => {
+export default async (
+  path: string,
+  nodeArgs: Array<string> = [],
+  cliArgs: Array<string> = [],
+): Promise<ProfileResults> => {
   let fullPath = path;
 
   // If our path isn't absolute, we will make it absolute using the CWD
@@ -21,11 +25,12 @@ module.exports = async (path, nodeArgs = [], cliArgs = []) => {
     fullPath = `${process.cwd()}/${path}`;
   }
 
-  let content = fs.readFileSync(fullPath).toString()
+  const content = fs.readFileSync(fullPath).toString();
 
   // Wrap entire thing into a JS function, then pass it to `bench()`
-  return bench(Function(content), [], {
+  // eslint-disable-next-line @typescript-eslint/no-implied-eval
+  return bench(Function(content) as () => any, [], {
     nodeArgs,
-    cliArgs
+    cliArgs,
   });
 };

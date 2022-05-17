@@ -1,3 +1,3 @@
-const x = require('console');
+const { log } = require('console');
 
-x.log(1 + 1);
+log(1 + 1);

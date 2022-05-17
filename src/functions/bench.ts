@@ -1,6 +1,10 @@
-const { fork } = require('child_process');
-const Profiler = require('../classes/Profiler');
-const { getInternals, wrap } = require('../helpers/fnFormat');
+import { fork } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import ProfileResults from '../classes/ProfileResults';
+
+import Profiler from '../classes/Profiler';
+import { getInternals, wrap } from '../helpers/fnFormat';
 
 /**
  * Benchmarks a function in an isolated process.
@@ -28,14 +32,31 @@ const { getInternals, wrap } = require('../helpers/fnFormat');
  * @param {Array=} opts.cliArgs
  * Array of args to pass to the file itself
  */
-module.exports = async (func, args = [], opts = {}) => {
-  const child = fork(`${__dirname}/../helpers/thread.js`, opts.cliArgs || [], {
-    execArgv: ['--expose-gc'].concat(opts.nodeArgs || [])
+export default async (
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  func: (...args: any[]) => any,
+  args: Array<unknown> = [],
+  opts: BenchOptions = {},
+  profilerOpts: ProfilerOptions = {},
+):Promise<ProfileResults> => {
+  let execArgv = ['--expose-gc'];
+  let procPath = path.join(__dirname, '../helpers/thread.js');
+
+  if (!fs.existsSync(procPath)) {
+    procPath = procPath.replace('.js', '.ts');
+    execArgv = execArgv.concat(['-r', 'ts-node/register']);
+  }
+
+  const child = fork(procPath, opts.cliArgs || [], {
+    execArgv: execArgv.concat(opts.nodeArgs || []),
   });
-  const profiler = new Profiler(child.pid, opts);
+
+  if (!child.pid) throw Error('Child process was not assigned a PID');
+
+  const profiler = new Profiler(child.pid, profilerOpts);
   // We have to redefine require() since the forked process doesn't do it for us :(
   let formatted = 'const require = global.process.mainModule.require;';
-  let results;
+  let results: ProfileResults;
 
   // Argument type errors to prevent cryptic errors when formatting/passing stuff around.
   if (typeof func !== 'function') throw new TypeError('Function argument was not a function');
@@ -49,7 +70,7 @@ module.exports = async (func, args = [], opts = {}) => {
     // All other module paths are this dir, not the project dir
     let requires = `global.process.mainModule.paths.push("${process.cwd()}/node_modules");`;
 
-    opts.requirements.forEach((r) => {
+    opts.requirements.forEach((r: { name: string, path: string }) => {
       requires += `const ${r.name} = require('${r.path}');`;
     });
 
@@ -71,7 +92,8 @@ module.exports = async (func, args = [], opts = {}) => {
   child.send({ stage: 'preload', func: formatted, args });
 
   // Control of the profiler is given to the child process.
-  child.on('message', async (message) => {
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  child.on('message', async (message: string): Promise<void> => {
     switch (message) {
       case 'preloaded':
         // Start profiler first in order to allow the memory watcher to get baseline data.
@@ -86,7 +108,6 @@ module.exports = async (func, args = [], opts = {}) => {
         break;
 
       default:
-        console.log(message);
         break;
     }
   });

@@ -1,7 +1,23 @@
-const cp = require('child_process');
-const ProfileResults = require('./ProfileResults');
+import cp, { ChildProcess } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import ProfileResults from './ProfileResults';
 
-module.exports = class Profiler {
+export default class Profiler {
+  public toWatch: number;
+
+  public results: null | ResultData;
+
+  public process: null | ChildProcess;
+
+  public toFile: boolean;
+
+  public timestep: number;
+
+  public wait: number;
+
+  public trimNodeProcessUsage: boolean;
+
   /**
    * Class for profiling a process, provided a PID.
    *
@@ -23,7 +39,7 @@ module.exports = class Profiler {
    * @param {Boolean=} opts.trimNodeProcessUsage
    * Trim base node process usage from tracked usage.
    */
-  constructor (pid, opts = {}) {
+  constructor(pid: number, opts: ProfilerOptions | Record<string, null> = {}) {
     this.toWatch = pid;
     this.results = null;
     this.process = null;
@@ -40,17 +56,27 @@ module.exports = class Profiler {
   /**
    * Starts the watching process by spawning a fork of the monitoring file.
    */
-  start () {
-    this.process = cp.fork(`${__dirname}/../helpers/watch.js`, [
-      this.toWatch,
-      this.timestep,
-      this.wait,
-      this.toFile,
-      this.trimNodeProcessUsage
-    ]);
+  async start(): Promise<Profiler> {
+    let execArgv: Array<string> = [];
+    let procPath = path.join(__dirname, '../helpers/watch.js');
+
+    if (!fs.existsSync(procPath)) {
+      procPath = procPath.replace('.js', '.ts');
+      execArgv = ['-r', 'ts-node/register'];
+    }
+
+    this.process = cp.fork(procPath, [
+      this.toWatch as unknown as string,
+      this.timestep as unknown as string,
+      this.wait as unknown as string,
+      this.toFile as unknown as string,
+      this.trimNodeProcessUsage as unknown as string,
+    ], {
+      execArgv,
+    });
 
     // Setup our message handler for when the process sends the data.
-    this.process.on('message', (message) => {
+    this.process.on('message', (message: ResultData) => {
       this.results = message;
 
       // Kill the watcher process (if it hasn't already).
@@ -69,7 +95,7 @@ module.exports = class Profiler {
   /**
    * Kills the monitoring fork process, returns data.
    */
-  end () {
+  end(): Promise<ProfileResults> {
     // Send 'stop' message which will give us our data.
     // Once we have the data, we can safely kill the process.
     if (this.process) this.process.send('stop');
@@ -83,4 +109,4 @@ module.exports = class Profiler {
       }, 100);
     });
   }
-};
+}
