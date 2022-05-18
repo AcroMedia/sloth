@@ -10,7 +10,7 @@
     "test-ci": "yarn test-min;",
     "lint": "eslint .",
     "build": "tsc",
-    "release": "semantic-release"
+    "release": "npx semantic-release --yes"
   },
   "repository": {
     "type": "git",
