@@ -1,3 +1,5 @@
+/* eslint-disable arrow-parens */
+/* eslint-disable arrow-body-style */
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import ProfileResults from '../../src/classes/ProfileResults';
@@ -27,7 +29,7 @@ describe('bench', () => {
     expect(await bench(async () => false)).to.be.a('object');
 
     // Arrow function, with brackets
-    const c = () => false;
+    const c = () => { return false; };
     expect(await bench(c)).to.be.a('object');
 
     // Arrow function, no brackets
@@ -35,21 +37,21 @@ describe('bench', () => {
     expect(await bench(d)).to.be.a('object');
 
     // Async arrow function, with brackets
-    const e = async () => false;
+    const e = async () => { return false; };
     expect(await bench(e)).to.be.a('object');
 
     // Async arrow function, no brackets
-    const f = async () => false;
+    const f = async () => { return false; };
     expect(await bench(f)).to.be.a('object');
 
     // Anon arrow function, with brackets
-    expect(await bench(() => false)).to.be.a('object');
+    expect(await bench(() => { return false; })).to.be.a('object');
 
     // Anon arrow function, no brackets
     expect(await bench(() => false)).to.be.a('object');
 
     // Async anon arrow function, with brackets
-    expect(await bench(async () => false)).to.be.a('object');
+    expect(await bench(async () => { return false; })).to.be.a('object');
 
     // Async anon arrow function, no brackets
     expect(await bench(async () => false)).to.be.a('object');
@@ -58,7 +60,8 @@ describe('bench', () => {
     expect(await bench((x: number, y: number) => x + y, [1, 1])).to.be.a('object');
 
     // Function with args (not wrapped)
-    expect(await bench((x: string) => x, ['1'])).to.be.a('object');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    expect(await bench(x => x, ['1'])).to.be.a('object');
   });
 
   it('tests setup function', async () => {
