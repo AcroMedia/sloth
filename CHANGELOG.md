@@ -1,3 +1,20 @@
+# [1.2.0](https://github.com/AcroMedia/sloth/compare/v1.1.4...v1.2.0) (2022-05-18)
+
+
+### Bug Fixes
+
+* all tests pass ([adeca85](https://github.com/AcroMedia/sloth/commit/adeca852e9985ccc41fe6eec285f4a6fd437065c))
+* declaration ([37ae0d3](https://github.com/AcroMedia/sloth/commit/37ae0d3bbf132f2ec91bcf63294f7c3c5d66b987))
+* function return value for benchFile ([b92f5eb](https://github.com/AcroMedia/sloth/commit/b92f5eb700a7baef06f31b21c3f640afe6f450c3))
+* incorrect file reference ([4e33ddb](https://github.com/AcroMedia/sloth/commit/4e33ddb279d0340eb3c0e01a25aecec990f2b404))
+* semantic release ([2cec1e7](https://github.com/AcroMedia/sloth/commit/2cec1e7808bdd957c31329461143a6d5eab7d38a))
+* tests ([5b57898](https://github.com/AcroMedia/sloth/commit/5b57898015fa124dba89cc60777ece020247d692))
+
+
+### Features
+
+* typescript!! ([32321b5](https://github.com/AcroMedia/sloth/commit/32321b55951a10b63ba604106005937ff07d751f))
+
 ## [1.1.4](https://github.com/AcroMedia/sloth/compare/v1.1.3...v1.1.4) (2021-07-12)
 
 
