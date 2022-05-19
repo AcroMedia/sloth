@@ -11,11 +11,11 @@
     "declaration": true,
     "typeRoots": [
       "./node_modules/@types",
-      "./types"
+      "src/types"
     ]
   },
   "include": [
-    "./src", "./types/global.d.ts", "index.ts"
+    "./src", "src/types/global.d.ts", "index.ts"
   ],
   "exclude": [
     "./node_modules",
