@@ -1,7 +1,7 @@
 import colors from 'colors';
 import createChart from '../../src/helpers/createChart';
 
-import '../../types/global';
+import '../../src/types/global';
 
 import ProfileResults from '../../src/classes/ProfileResults';
 
