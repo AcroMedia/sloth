@@ -1,3 +1,11 @@
+## [1.2.1](https://github.com/AcroMedia/sloth/compare/v1.2.0...v1.2.1) (2022-05-19)
+
+
+### Bug Fixes
+
+* move typdefs to src ([6e22ee0](https://github.com/AcroMedia/sloth/commit/6e22ee07d16df3bb1f28aaec2253775eeaba346b))
+* typdefs in tests ([6df958f](https://github.com/AcroMedia/sloth/commit/6df958fba6e86f5a6c3fabe4fe8c8188462b5fc9))
+
 # [1.2.0](https://github.com/AcroMedia/sloth/compare/v1.1.4...v1.2.0) (2022-05-18)
 
 
