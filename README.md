@@ -1,3 +1,13 @@
+<h1 align="center">Sloth</h1>
+
+<p align="center">
+  <img alt="version" src="https://img.shields.io/github/package-json/v/AcroMedia/sloth">
+  <img alt="deps" src="https://img.shields.io/librariesio/github/AcroMedia/sloth">
+  <br />
+  <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/AcroMedia/sloth/main">
+  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/AcroMedia/sloth?label=updated">
+ </p>
+
 # Description
 
 Sloth is a Node module created with the intention of allowing easy and versatile memory profiling in NodeJS scripts, projects, and tests.
